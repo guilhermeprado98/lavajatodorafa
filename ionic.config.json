@@ -1,0 +1,7 @@
+{
+  "name": "lavajatodorafa",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
