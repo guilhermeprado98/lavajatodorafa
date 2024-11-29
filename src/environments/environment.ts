@@ -3,7 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: 'http://localhost/lavajatodorafa-backend/api',  // Exemplo de variável de ambiente para a URL da API
 };
 
 /*
