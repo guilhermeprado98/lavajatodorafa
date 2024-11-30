@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private router: Router) {}
+
+  logout() {
+    // Realiza ações necessárias para limpar dados do usuário (opcional)
+    localStorage.clear(); // Exemplo: limpar token ou informações de sessão
+    this.router.navigate(['/login']); // Redireciona para a página de login
+  }
 }
