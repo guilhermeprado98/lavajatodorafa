@@ -35,3 +35,19 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+
+.swal2-container {
+  z-index: 2147483647 !important; /* Valor máximo suportado pelo CSS */
+  position: fixed !important;    /* Garante que ele fique na tela */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+ion-app,
+ion-content {
+  position: relative;
+  z-index: 1; /* Reduz a prioridade dos elementos do Ionic */
+}

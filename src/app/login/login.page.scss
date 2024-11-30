@@ -1,0 +1,90 @@
+/* Estilo do fundo */
+ion-content {
+  --background: linear-gradient(to bottom, #e0e0e0, #cfcfcf);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* Container principal */
+.login-container {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Cabeçalho */
+.login-header {
+  margin-bottom: 20px;
+}
+
+.login-header h2 {
+  font-size: 24px;
+  color: #0078d7;
+  font-weight: bold;
+}
+
+.login-header p {
+  font-size: 16px;
+  color: #555;
+  margin-top: 5px;
+}
+
+/* Campos do formulário */
+.form-group {
+  margin-bottom: 15px;
+}
+
+ion-input {
+  width: 100%;
+  --background: #f9f9f9;
+  --border-radius: 5px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  border: 1px solid #ddd;
+  height: 45px;
+  font-size: 14px;
+}
+
+/* Botão de login */
+ion-button {
+  --background: #0078d7;
+  --background-hover: #005a9e;
+  --border-radius: 5px;
+  color: #fff;
+}
+
+/* Link para cadastro */
+.register-link {
+  margin-top: 20px;
+}
+
+.register-link a {
+  color: #0078d7;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-link ion-icon {
+  font-size: 20px;
+  margin-right: 5px;
+  color: #0078d7;
+}
+
+.swal-custom-popup {
+  z-index: 9999 !important;
+}
+ion-content {
+  z-index: auto;
+}
+
+ion-app {
+  z-index: auto;
+}
