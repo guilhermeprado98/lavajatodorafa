@@ -25,3 +25,61 @@
 #container a {
   text-decoration: none;
 }
+
+ion-content {
+  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-container {
+  padding: 20px;
+}
+
+.banner {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.banner h2 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.banner p {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+ion-card {
+  text-align: center;
+  --border-radius: 10px;
+  --background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+ion-card h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0078d7;
+}
+
+ion-card p {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
+
+.icon {
+  font-size: 40px;
+  color: #0078d7;
+  margin-top: 10%;
+}

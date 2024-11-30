@@ -1,20 +1,55 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Lava Jato do Rafa</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="home-container">
+    <div class="banner">
+      <h2>Deixe seu carro brilhando!</h2>
+      <p>Escolha um serviço e agende agora.</p>
+    </div>
+    <div class="menu-grid">
+      <ion-card routerLink="/entrada">
+        <ion-icon name="enter-outline" class="icon"></ion-icon>
+        <ion-card-content>
+          <h3>Entrada</h3>
+          <p>Registrar entrada de veículos.</p>
+        </ion-card-content>
+      </ion-card>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <ion-card routerLink="/saida">
+        <ion-icon name="exit-outline" class="icon"></ion-icon>
+        <ion-card-content>
+          <h3>Saída</h3>
+          <p>Registrar saída de veículos.</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card routerLink="/agendamentos">
+        <ion-icon name="calendar-outline" class="icon"></ion-icon>
+        <ion-card-content>
+          <h3>Agendamentos</h3>
+          <p>Agende seu horário conosco.</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card routerLink="/servicos">
+        <ion-icon name="car-outline" class="icon"></ion-icon>
+        <ion-card-content>
+          <h3>Serviços</h3>
+          <p>Confira nossos serviços.</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card routerLink="/historico">
+        <ion-icon name="time-outline" class="icon"></ion-icon>
+        <ion-card-content>
+          <h3>Histórico</h3>
+          <p>Veja os serviços realizados.</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
   </div>
 </ion-content>

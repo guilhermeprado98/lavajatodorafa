@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginPage {
   login() {
     const credenciais = { email: this.email, senha: this.senha };
 
-    fetch('http://localhost/lavajatodorafa-backend/api/services/login.php', {
+    fetch(`${environment.apiUrl}/services/login.php`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +40,6 @@ export class LoginPage {
           });
           this.router.navigate(['/home']);
         } else {
-          console.log('res',res);
           Swal.fire({
             icon: 'error',
             title: 'Erro de conexão',

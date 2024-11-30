@@ -18,13 +18,16 @@
         <ion-input placeholder="E-mail" [(ngModel)]="email" name="email" required></ion-input>
       </div>
       <div class="form-group">
-        <ion-input placeholder="Senha" [(ngModel)]="senha" name="senha" type="password" required></ion-input>
+        <ion-input placeholder="Senha" [(ngModel)]="senha" name="senha" type="password" maxlength="8" required></ion-input>
+      </div>
+      <div class="form-group">
+        <ion-input placeholder="Confirmar Senha" [(ngModel)]="confirmarSenha" name="confirmarSenha" type="password" maxlength="8" required></ion-input>
       </div>
       <div class="form-group">
         <ion-input placeholder="Celular" [(ngModel)]="celular" name="celular" type="tel" required (ionInput)="formatPhone($event)"></ion-input>
       </div>
       <div class="form-actions">
-        <ion-button type="submit" expand="bl<ock">Cadastrar</ion-button>
+        <ion-button type="submit" expand="block"><strong>Cadastrar</strong></ion-button>
       </div>
     </form>
   </div>

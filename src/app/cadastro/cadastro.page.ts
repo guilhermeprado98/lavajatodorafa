@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { environment } from '../../environments/environment'; // Add this import
 
 @Component({
   selector: 'app-cadastro',
@@ -10,12 +12,24 @@ export class CadastroPage {
   nome: string = '';
   email: string = '';
   senha: string = '';
+  confirmarSenha: string = '';
   celular: string = '';
   tipo: string = '';
 
   constructor(private router: Router) {}
 
   cadastrar() {
+    if (this.senha !== this.confirmarSenha) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Erro',
+        text: 'As senhas não coincidem.',
+        customClass: {
+          popup: 'swal-custom-popup',
+        },
+      });
+      return;
+    }
     const dados = {
       nome: this.nome,
       email: this.email,
@@ -24,7 +38,7 @@ export class CadastroPage {
       tipo: this.tipo,
     };
 
-    fetch('http://localhost/lavajatodorafa-backend/api/services/usuarios.php', {
+    fetch(`${environment.apiUrl}/services/usuarios.php`, { // Update the URL to use environment.apiUrl
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,14 +48,33 @@ export class CadastroPage {
       .then(response => response.json())
       .then(res => {
         if (res.sucesso) {
-          alert('Usuário cadastrado com sucesso!');
+          Swal.fire({
+            icon: 'success',
+            title: 'Cadastro realizado com sucesso!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
           this.router.navigate(['/login']);
         } else {
-          alert('Erro ao cadastrar: ' + res.mensagem);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro de conexão',
+            text: res.mensagem,
+            customClass: {
+              popup: 'swal-custom-popup',
+            },
+          });
         }
       })
       .catch(err => {
-        console.error('Erro ao conectar:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro de conexão',
+          text: err.message || 'Algo deu errado. Tente novamente mais tarde.',
+          customClass: {
+            popup: 'swal-custom-popup',
+          },
+        });
       });
   }
 
