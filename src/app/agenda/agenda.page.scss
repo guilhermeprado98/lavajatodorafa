@@ -1,0 +1,35 @@
+ion-content {
+  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.agenda-container {
+  padding: 15px;
+}
+
+.novo-agendamento-btn {
+  margin-bottom: 15px;
+}
+
+
+.agenda-form {
+  margin-bottom: 20px;
+}
+
+.agenda-lista {
+  margin-top: 20px;
+}
+
+.empty-state {
+  text-align: center;
+  color: #666;
+  margin-top: 50px;
+
+  ion-icon {
+    font-size: 60px;
+    color: #bbb;
+    margin-bottom: 10px;
+  }
+}

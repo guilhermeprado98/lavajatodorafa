@@ -1,13 +1,58 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>agenda</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Agendamentos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">agenda</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="agenda-container">
+    <ion-button expand="block" (click)="toggleForm()" class="novo-agendamento-btn">
+     <span> <strong> Novo Agendamento </strong></span>
+    </ion-button>
+
+    <!-- Formulário para novo agendamento -->
+    <form *ngIf="mostrarForm" (submit)="adicionarAgendamento()" class="agenda-form">
+      <ion-item>
+        <ion-label position="floating">Nome do Cliente</ion-label>
+        <ion-input [(ngModel)]="novoAgendamento.nome_cliente" name="nome_cliente" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Veículo</ion-label>
+        <ion-input [(ngModel)]="novoAgendamento.veiculo" name="veiculo" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-datetime [(ngModel)]="novoAgendamento.data_horario" name="data_horario" required></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Observações</ion-label>
+        <ion-textarea [(ngModel)]="novoAgendamento.observacoes" name="observacoes"></ion-textarea>
+      </ion-item>
+      <ion-button type="submit" expand="block">Salvar</ion-button>
+    </form>
+
+    <!-- Lista de agendamentos -->
+    <div class="agenda-lista" *ngIf="agendamentos.length > 0">
+      <ion-card *ngFor="let agendamento of agendamentos">
+        <ion-card-header>
+          <ion-card-title>{{ agendamento.nome_cliente }}</ion-card-title>
+          <ion-card-subtitle>{{ agendamento.veiculo }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Data/Horário:</strong> {{ agendamento.data_horario}}</p>
+          <p><strong>Observações:</strong> {{ agendamento.observacoes }}</p>
+          <ion-button size="small" fill="outline" (click)="editarAgendamento(agendamento)">Editar</ion-button>
+          <ion-button size="small" color="danger" (click)="removerAgendamento(agendamento)">Cancelar</ion-button>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Mensagem de lista vazia -->
+    <div *ngIf="agendamentos.length === 0" class="empty-state">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <p>Nenhum agendamento encontrado.</p>
+    </div>
+  </div>
 </ion-content>

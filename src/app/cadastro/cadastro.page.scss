@@ -1,3 +1,10 @@
+ion-content {
+  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .form-container {
   background: #f0f0f0;
   padding: 20px;
