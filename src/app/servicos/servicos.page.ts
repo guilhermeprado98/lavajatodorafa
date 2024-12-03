@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { AddServiceModal } from './add-service.modal';
+import { AddServiceComponent } from './modal/add-service.component';
+import { environment } from '../../environments/environment'; // Import environment
 
 @Component({
   selector: 'app-services',
@@ -14,12 +15,12 @@ export class ServicesPage implements OnInit {
   constructor(private modalController: ModalController) {}
 
   ngOnInit() {
-    this.tipoUsuario = localStorage.getItem('tipo_usuario') || 'cliente'; // Mock de autenticação
+    this.tipoUsuario = localStorage.getItem('tipo') || 'cliente'; // Mock de autenticação
     this.carregarServicos();
   }
 
   carregarServicos() {
-    fetch('http://localhost/lavajatodorafa-backend/api/services/listarServicos.php')
+    fetch(`${environment.apiUrl}/services/listarServicos.php`)
       .then((response) => response.json())
       .then((data) => {
         this.servicos = data;
@@ -29,7 +30,7 @@ export class ServicesPage implements OnInit {
 
   async abrirModalAdicionarServico() {
     const modal = await this.modalController.create({
-      component: AddServiceModal,
+      component: AddServiceComponent,
     });
     modal.onDidDismiss().then(() => this.carregarServicos());
     return await modal.present();
