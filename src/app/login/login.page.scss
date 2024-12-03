@@ -1,9 +1,10 @@
 /* Estilo do fundo */
 ion-content {
-  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  --background: linear-gradient(to bottom, #e0e0e0, #cfcfcf);
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
 }
 
 /* Container principal */
