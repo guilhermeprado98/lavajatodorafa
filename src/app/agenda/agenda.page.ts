@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 export class AgendaPage {
   agendamentos: any[] = [];
   mostrarForm: boolean = false;
+  tipoUsuario: string = '';
 
   novoAgendamento = {
     nome_cliente: '',
@@ -20,6 +21,19 @@ export class AgendaPage {
   };
 
   constructor(private http: HttpClient) {
+
+  const dadosUsuarios = localStorage.getItem('usuario');
+  if (dadosUsuarios) {
+    try {
+      const usuarios = JSON.parse(dadosUsuarios);
+      this.tipoUsuario = usuarios.tipo || 'cliente';
+    } catch (error) {
+      this.tipoUsuario = 'cliente';
+    }
+  } else {
+    this.tipoUsuario = 'cliente';
+  }
+  console.log('ususu',this.tipoUsuario);
     this.carregarAgendamentos();
   }
 

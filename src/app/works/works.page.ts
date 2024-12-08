@@ -18,9 +18,7 @@ export class WorksPage implements OnInit {
       try {
         const usuarios = JSON.parse(dadosUsuarios);
         this.tipoUsuario = usuarios.tipo || 'cliente';
-        console.log('Tipo de usuário carregado:', this.tipoUsuario);
       } catch (error) {
-        console.error('Erro ao processar dados do localStorage:', error);
         this.tipoUsuario = 'cliente';
       }
     } else {
