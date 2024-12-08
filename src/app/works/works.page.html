@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <a routerLink="/home" style="display: flex; align-items: center; margin: 10px; text-decoration: underline; text-decoration-color: white;">
+    <span style="font-size: 24px;"></span>
+    <span style="margin-left: 5px; color: white;">Voltar para Home</span>
+  </a>
+  <ion-button *ngIf="tipoUsuario === 'admin'" (click)="adicionarServico()">
+    Adicionar Serviço
+  </ion-button>
+  <ion-list>
+    <ion-item *ngFor="let servico of servicos">
+      <ion-label>
+        <h2>{{ servico.nome }}</h2>
+        <p>Preço: R$ {{ servico.preco }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

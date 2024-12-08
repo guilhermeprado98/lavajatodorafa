@@ -16,7 +16,7 @@ Este é o aplicativo **Lava Jato do Rafa**, desenvolvido com **Ionic + Angular**
 
 ### Backend (PHP)
 - **api/db.php**: Conexão com o banco de dados MySQL.
-- **api/servicos**: Endpoints para CRUD de serviços.
+- **api/works**: Endpoints para CRUD de serviços.
 
 ## 🛠️ Funcionalidades
 - **Cadastro de Serviços**: Permite adicionar novos serviços com nome, descrição, preço e data.

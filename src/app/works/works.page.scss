@@ -1,0 +1,19 @@
+ion-content {
+  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ion-item {
+  margin-bottom: 10px;
+}
+
+ion-label h2 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+ion-label p {
+  color: gray;
+  font-size: 14px;
+}

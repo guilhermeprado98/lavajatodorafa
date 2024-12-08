@@ -32,6 +32,8 @@ export class LoginPage {
       })
       .then((res) => {
         if (res.sucesso) {
+          // Armazenando dados do usuário no localStorage
+          localStorage.setItem('usuario', JSON.stringify(res.usuario));
           Swal.fire({
             icon: 'success',
             title: 'Login realizado com sucesso!',
@@ -42,7 +44,7 @@ export class LoginPage {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Erro de conexão',
+            title: 'Erro no login',
             text: res.mensagem,
             customClass: {
               popup: 'swal-custom-popup',
@@ -61,4 +63,5 @@ export class LoginPage {
         });
       });
   }
+
 }

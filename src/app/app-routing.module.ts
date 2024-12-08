@@ -28,8 +28,8 @@ const routes: Routes = [
     loadChildren: () => import('./historico/historico.module').then( m => m.HistoricoPageModule)
   },
   {
-    path: 'servicos',
-    loadChildren: () => import('./servicos/servicos.module').then( m => m.ServicosPageModule)
+    path: 'works',
+    loadChildren: () => import('./works/works.module').then( m => m.WorksPageModule)
   },
 ];
 
