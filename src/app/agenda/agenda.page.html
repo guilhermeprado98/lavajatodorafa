@@ -12,7 +12,7 @@
     <span style="margin-left: 5px; color: white;">Voltar para Home</span>
   </a>
   <div class="agenda-container">
-    <ion-button *ngIf="tipoUsuario === 'admin'" expand="block" (click)="toggleForm()" class="novo-agendamento-btn">
+    <ion-button *ngIf="tipoUsuario === 'admin'" (click)="toggleForm()" class="novo-agendamento-btn">
      <span> <strong> Novo Agendamento </strong></span>
     </ion-button>
 
@@ -46,8 +46,8 @@
         <ion-card-content>
           <p><strong>Data/Horário:</strong> {{ agendamento.data_horario}}</p>
           <p><strong>Observações:</strong> {{ agendamento.observacoes }}</p>
-          <ion-button size="small" fill="outline" (click)="editarAgendamento(agendamento)">Editar</ion-button>
-          <ion-button size="small" color="danger" (click)="removerAgendamento(agendamento)">Cancelar</ion-button>
+          <ion-button size="small" *ngIf="tipoUsuario === 'admin'" fill="outline" (click)="editarAgendamento(agendamento)">Editar</ion-button>
+          <ion-button size="small" *ngIf="tipoUsuario === 'admin'" color="danger" (click)="removerAgendamento(agendamento)">Cancelar</ion-button>
         </ion-card-content>
       </ion-card>
     </div>
