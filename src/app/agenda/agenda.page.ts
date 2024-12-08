@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 import Swal from 'sweetalert2';
+import { ManageServiceAgendaComponent } from '../pages/agenda/modals/manage-service/manage-service.component';
+
 
 @Component({
   selector: 'app-agenda',
@@ -10,8 +13,12 @@ import Swal from 'sweetalert2';
 })
 export class AgendaPage {
   agendamentos: any[] = [];
+  agendamentosPaginados: any[] = [];
   mostrarForm: boolean = false;
   tipoUsuario: string = '';
+  itensPorPagina = 10;
+  paginaAtual = 0;
+
 
   novoAgendamento = {
     nome_cliente: '',
@@ -20,7 +27,7 @@ export class AgendaPage {
     observacoes: ''
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private modalController: ModalController) {
 
   const dadosUsuarios = localStorage.getItem('usuario');
   if (dadosUsuarios) {
@@ -41,6 +48,7 @@ export class AgendaPage {
     this.http.get(`${environment.apiUrl}/services/agendamento.php`).subscribe(
       (res: any) => {
         this.agendamentos = res;
+        this.atualizarListaPaginada();
       },
       err => console.error('Erro ao carregar agendamentos:', err)
     );
@@ -50,40 +58,22 @@ export class AgendaPage {
     this.mostrarForm = !this.mostrarForm; // Alterna a visibilidade do formulário
   }
 
-  adicionarAgendamento() {
-    this.http.post(`${environment.apiUrl}/services/agendamento.php`, this.novoAgendamento).subscribe(
-      (res: any) => {
-        if (res.sucesso) {
-          Swal.fire({
-            title: 'Sucesso!',
-            text: 'Horário agendado com sucesso.',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          }).then(() => {
-            this.carregarAgendamentos();
-            this.resetarFormulario();
-            this.mostrarForm = false;
-          });
-        }else{
-          Swal.fire({
-            title: 'Erro!',
-            text: 'Erro ao agendar horário. '+ res.mensagem,
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-        }
+  async abrirModalAdicionarAgenda() {
+    const modal = await this.modalController.create({
+      component: ManageServiceAgendaComponent,
+      componentProps: {
+        operacao: 'add',
+        servico: {},
       },
-      err => {
-        console.log('error',err)
-        console.error('Erro agendar horário.', err);
-        Swal.fire({
-          title: 'Erro!',
-          text: 'Erro ao adicionar agendamento.',
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result?.data?.resultado) {
+        this.carregarAgendamentos();
       }
-    );
+    });
+
+    return await modal.present();
   }
 
   editarAgendamento(agendamento: any) {
@@ -91,31 +81,6 @@ export class AgendaPage {
     this.novoAgendamento = { ...agendamento };
   }
 
-  removerAgendamento(id: number) {
-    this.http.delete(`${environment.apiUrl}/services/agendamento.php?id=${id}`).subscribe(
-      (res: any) => {
-        if (res.sucesso) {
-          Swal.fire({
-            title: 'Sucesso!',
-            text: 'Agendamento removido com sucesso.',
-            icon: 'success',
-            confirmButtonText: 'Ok'
-          }).then(() => {
-            this.carregarAgendamentos();
-          });
-        }
-      },
-      err => {
-        console.error('Erro ao cancelar agendamento:', err);
-        Swal.fire({
-          title: 'Erro!',
-          text: 'Erro ao cancelar agendamento.',
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
-      }
-    );
-  }
 
   resetarFormulario() {
     this.novoAgendamento = {
@@ -124,5 +89,61 @@ export class AgendaPage {
       data_horario: '',
       observacoes: ''
     };
+  }
+
+
+  async abrirModalEditarAgenda(agendamento: any) {
+    const modal = await this.modalController.create({
+      component: ManageServiceAgendaComponent,
+      componentProps: {
+        operacao: 'edit',
+        agendamento,
+      },
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result?.data?.resultado) {
+        this.carregarAgendamentos();
+      }
+    });
+
+    return await modal.present();
+  }
+
+  async abrirModalRemoverAgenda(agendamento: any) {
+    console.log('agendamento',agendamento);
+    const modal = await this.modalController.create({
+      component: ManageServiceAgendaComponent,
+      componentProps: {
+        operacao: 'delete',
+        agendamento,
+      },
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result?.data?.resultado) {
+        this.carregarAgendamentos();
+      }
+    });
+
+    return await modal.present();
+  }
+
+
+  atualizarListaPaginada() {
+    const inicio = this.paginaAtual * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    this.agendamentosPaginados = this.agendamentos.slice(inicio, fim);
+  }
+
+  mudarPagina(pagina: number) {
+    if (pagina >= 0 && pagina < Math.ceil(this.agendamentos.length / this.itensPorPagina)) {
+      this.paginaAtual = pagina;
+      this.atualizarListaPaginada();
+    }
+  }
+
+  temMaisPaginas() {
+    return this.paginaAtual < Math.ceil(this.agendamentos.length / this.itensPorPagina) - 1;
   }
 }

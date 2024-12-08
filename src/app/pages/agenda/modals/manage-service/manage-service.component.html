@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ operacao === 'add' ? 'Adicionar Agendamento' : operacao === 'edit' ? 'Editar Agendamento' : 'Remover Agendamento' }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Formulário para adicionar/editar agendamento -->
+  <form *ngIf="operacao !== 'delete'" (submit)="salvar()" class="agendamento-form">
+
+    <ion-item>
+      <ion-label position="stacked">Veículo</ion-label>
+      <ion-input [(ngModel)]="agendamento.veiculo" name="veiculo" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-datetime [(ngModel)]="agendamento.data_horario" name="data_horario" required></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Observações</ion-label>
+      <ion-textarea [(ngModel)]="agendamento.observacoes" name="observacoes"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Serviço</ion-label>
+      <ion-select [(ngModel)]="agendamento.servico_id" name="servico" required>
+        <ion-select-option *ngFor="let servico of listaServicos" [value]="servico.id">
+          {{ servico.nome }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </form>
+
+  <!-- Mensagem para deletar agendamento -->
+  <div *ngIf="operacao === 'delete'" style="text-align: center; padding: 10px;">
+    <p>Você deseja remover o agendamento de <strong>{{ agendamento.nome_cliente }}</strong>?</p>
+  </div>
+
+  <ion-button
+    expand="block"
+    color="primary"
+    (click)="salvar()"
+    style="margin: 10px 0;">
+    {{ operacao === 'delete' ? 'Remover Agendamento' : 'Salvar' }}
+  </ion-button>
+</ion-content>

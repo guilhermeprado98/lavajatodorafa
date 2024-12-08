@@ -71,8 +71,6 @@ export class ManageServiceComponent {
 
       const resultado = await response.json();
 
-      console.log('Resultado da Operação:', resultado);
-
       if (resultado?.sucesso) {
         Swal.fire('Operação realizada com sucesso!', '', 'success');
         this.modalController.dismiss({ resultado: true });

@@ -7,55 +7,41 @@
 </ion-header>
 
 <ion-content>
-  <a routerLink="/home" style="display: flex; align-items: center; margin: 10px; text-decoration: underline; text-decoration-color: white;">
-    <span style="font-size: 24px;"></span>
-    <span style="margin-left: 5px; color: white;">Voltar para Home</span>
-  </a>
+
+
   <div class="agenda-container">
-    <ion-button *ngIf="tipoUsuario === 'admin'" (click)="toggleForm()" class="novo-agendamento-btn">
-     <span> <strong> Novo Agendamento </strong></span>
+    <ion-button *ngIf="tipoUsuario === 'admin'" color="primary" (click)="abrirModalAdicionarAgenda()">
+      Adicionar Agendamento
     </ion-button>
-
-    <!-- Formulário para novo agendamento -->
-    <form *ngIf="mostrarForm" (submit)="adicionarAgendamento()" class="agenda-form">
-      <ion-item>
-        <ion-label position="floating">Nome do Cliente</ion-label>
-        <ion-input [(ngModel)]="novoAgendamento.nome_cliente" name="nome_cliente" required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Veículo</ion-label>
-        <ion-input [(ngModel)]="novoAgendamento.veiculo" name="veiculo" required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-datetime [(ngModel)]="novoAgendamento.data_horario" name="data_horario" required></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Observações</ion-label>
-        <ion-textarea [(ngModel)]="novoAgendamento.observacoes" name="observacoes"></ion-textarea>
-      </ion-item>
-      <ion-button type="submit" expand="block">Salvar</ion-button>
-    </form>
-
-    <!-- Lista de agendamentos -->
-    <div class="agenda-lista" *ngIf="agendamentos.length > 0">
-      <ion-card *ngFor="let agendamento of agendamentos">
+    <!-- Lista de agendamentos com paginação -->
+    <div *ngIf="agendamentosPaginados.length > 0" class="agenda-lista">
+      <ion-card *ngFor="let agendamento of agendamentosPaginados">
         <ion-card-header>
           <ion-card-title>{{ agendamento.nome_cliente }}</ion-card-title>
           <ion-card-subtitle>{{ agendamento.veiculo }}</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
-          <p><strong>Data/Horário:</strong> {{ agendamento.data_horario}}</p>
+          <p><strong>Data/Horário:</strong> {{ agendamento.data_horario }}</p>
           <p><strong>Observações:</strong> {{ agendamento.observacoes }}</p>
-          <ion-button size="small" *ngIf="tipoUsuario === 'admin'" fill="outline" (click)="editarAgendamento(agendamento)">Editar</ion-button>
-          <ion-button size="small" *ngIf="tipoUsuario === 'admin'" color="danger" (click)="removerAgendamento(agendamento)">Cancelar</ion-button>
+          <ion-button size="small" *ngIf="tipoUsuario === 'admin'" fill="outline" (click)="abrirModalEditarAgenda(agendamento)">Editar</ion-button>
+          <ion-button size="small" *ngIf="tipoUsuario === 'admin'" color="danger" (click)="abrirModalRemoverAgenda(agendamento)">Remover</ion-button>
         </ion-card-content>
       </ion-card>
     </div>
 
     <!-- Mensagem de lista vazia -->
-    <div *ngIf="agendamentos.length === 0" class="empty-state">
+    <div *ngIf="agendamentosPaginados.length === 0" class="empty-state">
       <ion-icon name="calendar-outline"></ion-icon>
       <p>Nenhum agendamento encontrado.</p>
     </div>
+
+   <ion-row class="ion-justify-content-center" style="margin-top: 10px;">
+    <ion-button [disabled]="paginaAtual === 0" (click)="mudarPagina(paginaAtual - 1)">
+      Anterior
+    </ion-button>
+    <ion-button [disabled]="!temMaisPaginas()" (click)="mudarPagina(paginaAtual + 1)">
+      Próximo
+    </ion-button>
+  </ion-row>
   </div>
 </ion-content>
