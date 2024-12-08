@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ operacao === 'add' ? 'Adicionar Serviço' : operacao === 'edit' ? 'Editar Serviço' : 'Remover Serviço' }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form *ngIf="operacao !== 'delete'">
+    <ion-item>
+      <ion-label position="stacked">Nome do Serviço</ion-label>
+      <ion-input [(ngModel)]="servico.nome" name="nome"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descrição do Serviço</ion-label>
+      <ion-input [(ngModel)]="servico.descricao" name="descricao"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Preço</ion-label>
+      <ion-input [(ngModel)]="servico.preco" name="preco" type="number" (ionBlur)="formatPrice()" inputmode="decimal" pattern="[0-9]*"></ion-input>
+    </ion-item>
+  </form>
+
+  <div *ngIf="operacao === 'delete'" style="text-align: center; padding: 10px;">
+    <p>Você deseja remover o serviço: <strong>{{ servico.nome }}</strong>?</p>
+  </div>
+
+  <ion-button
+    expand="block"
+    color="primary"
+    (click)="salvar()"
+    style="margin: 10px 0;">
+    {{ operacao === 'delete' ? 'Remover Serviço' : 'Salvar' }}
+  </ion-button>
+</ion-content>

@@ -6,21 +6,47 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
-  <a routerLink="/home" style="display: flex; align-items: center; margin: 10px; text-decoration: underline; text-decoration-color: white;">
+  <a routerLink="/home"
+    style="display: flex; align-items: center; margin: 10px; text-decoration: underline; text-decoration-color: white;">
     <span style="font-size: 24px;"></span>
     <span style="margin-left: 5px; color: white;">Voltar para Home</span>
   </a>
-  <ion-button *ngIf="tipoUsuario === 'admin'" (click)="adicionarServico()">
+
+  <ion-button *ngIf="tipoUsuario === 'admin'" color="primary" (click)="abrirModalAdicionarServico()">
     Adicionar Serviço
   </ion-button>
-  <ion-list>
-    <ion-item *ngFor="let servico of servicos">
-      <ion-label>
-        <h2>{{ servico.nome }}</h2>
-        <p>Preço: R$ {{ servico.preco }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+
+
+  <!-- Lista de serviços -->
+  <div *ngIf="servicosPaginados.length > 0" class="servicos-lista">
+    <ion-card *ngFor="let servico of servicosPaginados">
+      <ion-card-header>
+        <ion-card-title>{{ servico.nome }}</ion-card-title>
+
+      </ion-card-header>
+      <ion-card-content>
+        <p><strong>Descrição:</strong> {{ servico.descricao }}</p>
+        <p><strong>Preço:</strong> R$ {{ servico.preco }}</p>
+        <ion-button size="small" *ngIf="tipoUsuario === 'admin'" fill="outline" (click)="abrirModalEditarServico(servico)">Editar</ion-button>
+        <ion-button size="small" *ngIf="tipoUsuario === 'admin'" color="danger" (click)="abrirModalRemoverServico(servico)">Remover</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Mensagem caso não existam serviços -->
+  <div *ngIf="servicosPaginados.length === 0" class="empty-state">
+    <ion-icon name="construct-outline"></ion-icon>
+    <p>Nenhum serviço encontrado.</p>
+  </div>
+
+  <!-- Paginação -->
+  <ion-row class="ion-justify-content-center" style="margin-top: 10px;">
+    <ion-button [disabled]="paginaAtual === 0" (click)="mudarPagina(paginaAtual - 1)">
+      Anterior
+    </ion-button>
+    <ion-button [disabled]="!temMaisPaginas()" (click)="mudarPagina(paginaAtual + 1)">
+      Próximo
+    </ion-button>
+  </ion-row>
 </ion-content>

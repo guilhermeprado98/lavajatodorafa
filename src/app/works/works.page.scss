@@ -17,3 +17,46 @@ ion-label p {
   color: gray;
   font-size: 14px;
 }
+
+ion-card {
+  margin: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.servicos-lista {
+  margin-top: 20px;
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #888;
+}
+
+.pagination-controls {
+  margin-top: 10px;
+  text-align: center;
+}
+
+ion-card {
+  margin: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+ion-card-header {
+  background-color: #f5f5f5;
+  padding: 10px;
+  text-align: center;
+}
+
+ion-card-title,
+ion-card-subtitle {
+  text-align: center;
+}
