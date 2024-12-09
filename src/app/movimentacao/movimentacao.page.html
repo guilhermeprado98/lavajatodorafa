@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <a routerLink="/home"
+  style="display: flex; align-items: center; margin: 10px; text-decoration: underline; text-decoration-color: white;">
+  <span style="font-size: 24px;"></span>
+  <span style="margin-left: 5px; color: white;">Voltar para Home</span>
+</a>
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Registrar Entrada</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="stacked">Agendamento</ion-label>
+      <ion-select [(ngModel)]="idAgendamentoSelecionado" placeholder="Selecione um agendamento" (ionChange)="onAgendamentoChange()">
+        <ion-select-option *ngFor="let agendamento of agendamentos" [value]="agendamento.id">
+          {{ agendamento.nome_cliente }} - {{ agendamento.data_horario | date: 'short' }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Veículo</ion-label>
+      <ion-input [(ngModel)]="veiculo" readonly></ion-input> <!-- Campo desativado -->
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Observações</ion-label>
+      <ion-textarea [(ngModel)]="observacoes" readonly></ion-textarea> <!-- Campo desativado -->
+    </ion-item>
+    <ion-button expand="block" (click)="registrarEntrada()">Registrar Entrada</ion-button>
+  </ion-card-content>
+</ion-card>
+
+
+<ion-list>
+  <ion-list-header>
+    <ion-label>Movimentações</ion-label>
+  </ion-list-header>
+
+  <ion-card *ngFor="let movimentacao of movimentacoesVisiveis">
+    <ion-card-header>
+      <ion-card-title>{{ movimentacao.veiculo }}</ion-card-title>
+      <ion-card-subtitle>
+        Entrada: {{ movimentacao.data_hora_entrada | date: 'short' }}
+        <br />
+        <span *ngIf="movimentacao.data_hora_saida">
+          Saída: {{ movimentacao.data_hora_saida | date: 'short' }}
+        </span>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p *ngIf="movimentacao.observacoes">
+        <strong>Observações:</strong> {{ movimentacao.observacoes }}
+      </p>
+      <ion-button
+        *ngIf="!movimentacao.data_hora_saida"
+        color="danger"
+        (click)="registrarSaida(movimentacao.id)"
+        expand="block"
+      >
+        Registrar Saída
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+  <div class="pagination-container" style="display: flex; justify-content: center; align-items: center;">
+    <ion-button
+      [disabled]="paginaAtual === 1"
+      (click)="mudarPagina(paginaAtual - 1)"
+    >
+      Anterior
+    </ion-button>
+    <ion-button
+      [disabled]="paginaAtual === totalPaginas"
+      (click)="mudarPagina(paginaAtual + 1)"
+    >
+      Próximo
+    </ion-button>
+  </div>
+</ion-list>
+
+</ion-content>

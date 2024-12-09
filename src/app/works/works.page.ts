@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class WorksPage implements OnInit {
   servicos: any[] = [];
   tipoUsuario: string = '';
-  itensPorPagina = 2;
+  itensPorPagina = 10;
   paginaAtual = 0;
   servicosPaginados: any[] = [];
 

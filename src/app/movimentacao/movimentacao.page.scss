@@ -1,0 +1,25 @@
+ion-content {
+  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  padding: 0 10px;
+}
+
+.pagination-text {
+  font-size: 14px;
+  font-weight: bold;
+}

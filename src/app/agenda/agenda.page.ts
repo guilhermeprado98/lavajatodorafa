@@ -40,7 +40,6 @@ export class AgendaPage {
   } else {
     this.tipoUsuario = 'cliente';
   }
-  console.log('ususu',this.tipoUsuario);
     this.carregarAgendamentos();
   }
 
