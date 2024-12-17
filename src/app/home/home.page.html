@@ -7,23 +7,21 @@
 <ion-content>
   <div class="home-container">
     <div class="banner">
-      <h2>Deixe seu carro brilhando!</h2>
-      <p>Escolha um serviço e agende agora.</p>
+      <img src="../../assets/images/splash-logo512.png" class="splash-image" alt="Logo do Lava Jato" />
     </div>
     <div class="menu-grid">
-      <ion-card routerLink="/movimentacao">
+      <ion-card routerLink="/movimentacao" *ngIf="tipoUsuario === 'admin'">
         <ion-icon name="enter-outline" class="icon"></ion-icon>
         <ion-card-content>
-          <h3>Movimentações</h3>
+          <h3>Fluxos</h3>
           <p>Entrada/saída de veículos</p>
         </ion-card-content>
       </ion-card>
-
       <ion-card routerLink="/agenda">
         <ion-icon name="calendar-outline" class="icon"></ion-icon>
         <ion-card-content>
-          <h4>Agendamento</h4>
-          <p>Agende seu horário conosco.</p>
+          <h4>Agenda</h4>
+          <p>Faça seu agendamento.</p>
         </ion-card-content>
       </ion-card>
 
@@ -40,6 +38,20 @@
         <ion-card-content>
           <h3>Histórico</h3>
           <p>Veja os serviços realizados.</p>
+        </ion-card-content>
+      </ion-card>
+      <ion-card
+        routerLink="https://wa.me/5531992226240?text=Olá,%20desejo%20entrar%20em%20contato%20com%20a%20Elite%20Wash%20Car">
+        <ion-icon name="chatbubbles-outline" class="icon"></ion-icon>
+        <ion-card-content>
+          <h3>Suporte</h3>
+          <p>Entre em contato conosco!</p>
+        </ion-card-content>
+      </ion-card>
+      <ion-card routerLink="/logout">
+        <ion-icon name="log-out-outline" class="icon"></ion-icon>
+        <ion-card-content>
+          <h3>Sair</h3>
         </ion-card-content>
       </ion-card>
     </div>

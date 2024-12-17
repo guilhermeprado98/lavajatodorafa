@@ -1,0 +1,17 @@
+.splash-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b3bfbd; /* Cor de fundo (ajuste para combinar com a imagem) */
+  width: 100vw;
+  height: 100vh;
+}
+
+.splash-image {
+  width: 100%; /* Ocupa toda a largura disponível */
+  max-width: 100vw;
+  height: auto; /* Mantém a proporção */
+  border: 5px solid #b3bfbd; /* Borda com a mesma cor do fundo */
+  box-sizing: border-box; /* Garante que a borda não ultrapasse o tamanho da imagem */
+  border-radius: 500px;
+}

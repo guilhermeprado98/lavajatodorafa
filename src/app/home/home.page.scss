@@ -27,7 +27,7 @@
 }
 
 ion-content {
-  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  --background: #b3bfbd;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,4 +88,9 @@ ion-card p {
   font-size: 40px;
   color: #0078d7;
   margin-top: 10%;
+}
+
+img{
+  border-radius: 100%;
+
 }

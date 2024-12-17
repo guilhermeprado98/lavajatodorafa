@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'splash',
     pathMatch: 'full'
   },
   {
@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path: 'movimentacao',
     loadChildren: () => import('./movimentacao/movimentacao.module').then( m => m.MovimentacaoPageModule)
+  },
+  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
   },
 ];
 

@@ -7,6 +7,10 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  tipoUsuario: string = '';
+
+  constructor() {
+    this.tipoUsuario = localStorage.getItem('tipoUsuario') || '';
+  }
 
 }
