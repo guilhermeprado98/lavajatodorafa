@@ -10,14 +10,32 @@ import Swal from 'sweetalert2';
 })
 export class ManageServiceAgendaComponent implements OnInit {
   @Input() operacao: 'add' | 'edit' | 'delete' = 'add';
-  @Input() agendamento: any = null; // Recebe os dados do agendamento do componente pai
+  @Input() agendamento: any = null;
+  @Input() tipoUsuario: string = localStorage.getItem('usuario') || ''; // Recebe os dados do agendamento do componente pai
 
-  listaServicos: Array<any> = []; // Lista para armazenar os serviços no select
+  listaServicos: Array<any> = [];  // Lista para armazenar os serviços no select
+  listaClientes: Array<any> = [];
 
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     this.carregarServicos();
+
+    if (this.tipoUsuario === 'admin') {
+      this.carregarClientes();
+    } else {
+      const usuario = localStorage.getItem('usuario');
+      const cliente = usuario ? JSON.parse(usuario) : null;
+
+
+      if (cliente) {
+        this.listaClientes.push({
+          id: cliente.id,
+          nome: cliente.nome,
+        });
+      }
+    }
+
 
     // Garante que o agendamento tem valores padrão no modo add
     if (!this.agendamento) {
@@ -52,6 +70,27 @@ export class ManageServiceAgendaComponent implements OnInit {
   }
 
   /**
+   * Carrega os clientes disponíveis para admin
+   */
+  async carregarClientes() {
+    const usuario = localStorage.getItem('usuario');
+    const clienteLogado = usuario ? JSON.parse(usuario) : null;
+
+    // Inicializa listaClientes com base no tipo de usuário
+    if (clienteLogado) {
+      if (this.tipoUsuario === 'admin') {
+        // Busca todos os clientes na API para o admin
+        try {
+          const response = await fetch(`${environment.apiUrl}/services/clientes.php`);
+          const data = await response.json();
+          this.listaClientes = data || [];
+        } catch (error) {
+          console.error('Erro ao carregar clientes:', error);
+        }
+      }
+    }
+  }
+  /**
    * Fecha o modal sem fazer alterações
    */
   fecharModal() {
@@ -77,15 +116,15 @@ export class ManageServiceAgendaComponent implements OnInit {
       let method = 'POST';
       let body = null;
 
-      const id_cliente = localStorage.getItem('usuario');
-      const id_cliente_parse = id_cliente ? JSON.parse(id_cliente) : null;
-
       if (this.operacao === 'add') {
+        console.log('agendamento', this.agendamento);
+
         url = `${environment.apiUrl}/services/agendamento.php`;
         body = JSON.stringify({
           operacao: 'add',
-          id_cliente: id_cliente_parse['id'],
+          id_cliente: this.agendamento.cliente_id,
           veiculo: this.agendamento.veiculo,
+          placa: this.agendamento.placa,
           data_horario: this.agendamento.data_horario,
           observacoes: this.agendamento.observacoes,
           servico_id: this.agendamento.servico_id,
@@ -95,14 +134,10 @@ export class ManageServiceAgendaComponent implements OnInit {
       if (this.operacao === 'edit') {
         url = `${environment.apiUrl}/services/agendamento.php`;
 
-
-        const id_cliente = localStorage.getItem('usuario');
-        const id_cliente_parse = id_cliente ? JSON.parse(id_cliente) : null;
         body = JSON.stringify({
           operacao: 'edit',
-          id_cliente: id_cliente_parse['id'],
+          id_cliente: this.agendamento.cliente_id,
           id: this.agendamento.id,
-          nome: this.agendamento.nome,
           veiculo: this.agendamento.veiculo,
           data_horario: this.agendamento.data_horario,
           observacoes: this.agendamento.observacoes,

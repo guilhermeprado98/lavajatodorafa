@@ -13,9 +13,28 @@
   <!-- Formulário para adicionar/editar agendamento -->
   <form *ngIf="operacao !== 'delete'" (submit)="salvar()" class="agendamento-form">
 
+
+    <ion-item>
+      <ion-label position="stacked">Cliente</ion-label>
+      <ion-select
+        [(ngModel)]="agendamento.cliente_id"
+        name="cliente"
+        required>
+        <ion-select-option *ngFor="let cliente of listaClientes" [value]="cliente.id">
+          {{ cliente.nome }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
     <ion-item>
       <ion-label position="stacked">Veículo</ion-label>
       <ion-input [(ngModel)]="agendamento.veiculo" name="veiculo" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Placa</ion-label>
+      <ion-input [(ngModel)]="agendamento.placa" name="placa" maxlength="7" required></ion-input>
     </ion-item>
 
     <ion-item>

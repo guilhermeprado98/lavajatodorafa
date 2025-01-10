@@ -36,6 +36,7 @@ export class CadastroPage {
       senha: this.senha,
       celular: this.celular,
       tipo: this.tipo,
+      operacao: 'add',
     };
 
     fetch(`${environment.apiUrl}/services/usuarios.php`, { // Update the URL to use environment.apiUrl
