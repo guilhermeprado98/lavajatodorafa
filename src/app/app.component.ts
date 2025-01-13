@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-root',
@@ -15,8 +17,21 @@ export class AppComponent {
   }
 
   logout() {
-    // Realiza ações necessárias para limpar dados do usuário (opcional)
-    localStorage.clear(); // Exemplo: limpar token ou informações de sessão
-    this.router.navigate(['/login']); // Redireciona para a página de login
+    Swal.fire({
+      title: 'Deseja sair?',
+      text: 'Você será desconectado do sistema.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, sair',
+      cancelButtonText: 'Não, cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        localStorage.clear();
+        this.router.navigate(['/login']);
+      } else {
+        console.log('Logout cancelado!');
+      }
+    });
   }
 }

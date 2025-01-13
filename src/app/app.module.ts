@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ManageServiceComponent } from './pages/works/modals/manage-service/manage-service.component';
 import { ManageServiceAgendaComponent } from './pages/agenda/modals/manage-service/manage-service.component';
+
 @NgModule({
   declarations: [AppComponent,ManageServiceComponent,ManageServiceAgendaComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule ],

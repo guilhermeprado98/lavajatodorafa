@@ -65,7 +65,13 @@
     expand="block"
     color="primary"
     (click)="salvar()"
-    style="margin: 10px 0;">
+    style="margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: 50% !important;
+    margin-top: 5%;
+    margin-bottom: 5%;">
     {{ operacao === 'delete' ? 'Remover Agendamento' : 'Salvar' }}
   </ion-button>
 </ion-content>
