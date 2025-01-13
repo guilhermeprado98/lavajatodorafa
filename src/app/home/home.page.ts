@@ -10,7 +10,10 @@ export class HomePage {
   tipoUsuario: string = '';
 
   constructor() {
-    this.tipoUsuario = localStorage.getItem('tipoUsuario') || '';
+    const usuario = localStorage.getItem('usuario');
+    const usuarioParse = usuario ? JSON.parse(usuario) : null;
+    this.tipoUsuario = usuarioParse.tipo;
+
   }
 
 }

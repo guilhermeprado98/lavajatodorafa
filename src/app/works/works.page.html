@@ -7,10 +7,10 @@
 </ion-header>
 
 <ion-content>
-  <a routerLink="/home"
-    style="display: flex; align-items: center; margin: 10px; text-decoration: underline; text-decoration-color: white;">
-    <span style="font-size: 24px;"></span>
-    <span style="margin-left: 5px; color: white;">Voltar para Home</span>
+
+  <a routerLink="/home" style="display: flex; align-items: center; margin: 10px; text-decoration: none;">
+    <ion-icon name="arrow-back-outline" style="font-size: 24px; color: white;"></ion-icon>
+    <span style="margin-left: 8px; color: white;">Voltar</span>
   </a>
 
   <ion-button *ngIf="tipoUsuario === 'admin'" color="primary" (click)="abrirModalAdicionarServico()" style="color: white;">

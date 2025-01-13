@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 export class ManageServiceAgendaComponent implements OnInit {
   @Input() operacao: 'add' | 'edit' | 'delete' = 'add';
   @Input() agendamento: any = null;
-  @Input() tipoUsuario: string = localStorage.getItem('usuario') || ''; // Recebe os dados do agendamento do componente pai
+  @Input() dadosUsuario: string = localStorage.getItem('usuario') || ''; // Recebe os dados do agendamento do componente pai
 
   listaServicos: Array<any> = [];  // Lista para armazenar os serviços no select
   listaClientes: Array<any> = [];
@@ -21,7 +21,10 @@ export class ManageServiceAgendaComponent implements OnInit {
   ngOnInit() {
     this.carregarServicos();
 
-    if (this.tipoUsuario === 'admin') {
+
+    const UsuarioParse = this.dadosUsuario ? JSON.parse(this.dadosUsuario) : null;
+
+    if (UsuarioParse.tipo === 'admin') {
       this.carregarClientes();
     } else {
       const usuario = localStorage.getItem('usuario');
@@ -78,10 +81,12 @@ export class ManageServiceAgendaComponent implements OnInit {
 
     // Inicializa listaClientes com base no tipo de usuário
     if (clienteLogado) {
-      if (this.tipoUsuario === 'admin') {
+      const UsuarioParse = this.dadosUsuario ? JSON.parse(this.dadosUsuario) : null;
+
+      if (UsuarioParse.tipo === 'admin') {
         // Busca todos os clientes na API para o admin
         try {
-          const response = await fetch(`${environment.apiUrl}/services/clientes.php`);
+          const response = await fetch(`${environment.apiUrl}/services/usuarios.php`);
           const data = await response.json();
           this.listaClientes = data || [];
         } catch (error) {
@@ -117,8 +122,6 @@ export class ManageServiceAgendaComponent implements OnInit {
       let body = null;
 
       if (this.operacao === 'add') {
-        console.log('agendamento', this.agendamento);
-
         url = `${environment.apiUrl}/services/agendamento.php`;
         body = JSON.stringify({
           operacao: 'add',
