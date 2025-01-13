@@ -17,11 +17,14 @@
   <div *ngIf="historicoPaginado.length > 0" class="historico-lista">
     <ion-card *ngFor="let registro of historicoPaginado">
       <ion-card-header>
-        <ion-card-title>{{ registro.titulo }}</ion-card-title>
+        <ion-card-title>Veículo: {{ registro.veiculo }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p><strong>Descrição:</strong> {{ registro.descricao }}</p>
-        <p><strong>Data:</strong> {{ registro.data | date }}</p>
+        <p><strong>Número do Agendamento:</strong> {{ registro.id_agendamento }}</p>
+        <p><strong>Observações:</strong> {{ registro.observacoes }}</p>
+        <p><strong>Status:</strong> {{ registro.status }}</p>
+        <p><strong>Data de Entrada:</strong> {{ registro.data_hora_entrada | date:'short' }}</p>
+        <p><strong>Data de Saída:</strong> {{ registro.data_hora_saida | date:'short' }}</p>
       </ion-card-content>
     </ion-card>
   </div>

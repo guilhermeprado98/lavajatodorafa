@@ -49,6 +49,7 @@ export class ManageServiceAgendaComponent implements OnInit {
         data_horario: '',
         observacoes: '',
         servico_id: '',
+        placa: '',
       };
     } else if (this.agendamento.data_horario) {
       // Converte para formato ISO 8601, se necessário
@@ -127,10 +128,10 @@ export class ManageServiceAgendaComponent implements OnInit {
           operacao: 'add',
           id_cliente: this.agendamento.cliente_id,
           veiculo: this.agendamento.veiculo,
-          placa: this.agendamento.placa,
           data_horario: this.agendamento.data_horario,
           observacoes: this.agendamento.observacoes,
           servico_id: this.agendamento.servico_id,
+          placa: this.agendamento.placa,
         });
       }
 
@@ -145,10 +146,12 @@ export class ManageServiceAgendaComponent implements OnInit {
           data_horario: this.agendamento.data_horario,
           observacoes: this.agendamento.observacoes,
           servico_id: this.agendamento.servico_id,
+          placa: this.agendamento.placa,
         });
       }
 
       if (this.operacao === 'delete') {
+
         url = `${environment.apiUrl}/services/agendamento.php`;
         body = JSON.stringify({
           operacao: 'delete',

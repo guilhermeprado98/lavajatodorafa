@@ -24,7 +24,8 @@ export class AgendaPage {
     nome_cliente: '',
     veiculo: '',
     data_horario: '',
-    observacoes: ''
+    observacoes: '',
+    placa: '',
   };
 
   constructor(private http: HttpClient,private modalController: ModalController) {
@@ -96,7 +97,8 @@ export class AgendaPage {
       nome_cliente: '',
       veiculo: '',
       data_horario: '',
-      observacoes: ''
+      observacoes: '',
+      placa: '',
     };
   }
 

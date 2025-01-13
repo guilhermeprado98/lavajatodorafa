@@ -20,11 +20,15 @@
     <div *ngIf="agendamentosPaginados.length > 0" class="agenda-lista">
       <ion-card *ngFor="let agendamento of agendamentosPaginados">
         <ion-card-header>
-          <ion-card-title>{{ agendamento.nome_cliente }}</ion-card-title>
-          <ion-card-subtitle>{{ agendamento.veiculo }}</ion-card-subtitle>
+          <ion-card-subtitle>Placa: {{ agendamento.placa }}</ion-card-subtitle>
+          <ion-card-subtitle>Veículo: {{ agendamento.veiculo }}</ion-card-subtitle>
+          <ion-card-subtitle>Cliente: {{ agendamento.nome_cliente }}</ion-card-subtitle>
+          <ion-card-title>{{ agendamento.id }}</ion-card-title>
+
         </ion-card-header>
         <ion-card-content>
           <p><strong>Data/Horário:</strong> {{ agendamento.data_horario }}</p>
+          <p><strong>Serviço:</strong> {{ agendamento.nome_servico }}</p>
           <p><strong>Observações:</strong> {{ agendamento.observacoes }}</p>
           <ion-button size="small" *ngIf="tipoUsuario === 'admin'" fill="outline" (click)="abrirModalEditarAgenda(agendamento)">Editar</ion-button>
           <ion-button size="small" *ngIf="tipoUsuario === 'admin'" color="danger" (click)="abrirModalRemoverAgenda(agendamento)">Remover</ion-button>

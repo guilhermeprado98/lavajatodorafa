@@ -40,6 +40,7 @@ export class HistoricoPage implements OnInit {
       });
 
       const resultado = await response.json();
+      console.log('resultado',resultado);
       if (resultado.sucesso) {
         this.movimentacoes = resultado.movimentacoes;
         this.atualizarPagina(); // Atualiza os itens exibidos após carregar os dados
@@ -55,9 +56,11 @@ export class HistoricoPage implements OnInit {
    * Atualiza os itens exibidos com base na página atual.
    */
   atualizarPagina() {
-    const inicio = this.paginaAtual * this.itensPorPagina;
-    const fim = inicio + this.itensPorPagina;
-    this.historicoPaginado = this.movimentacoes.slice(inicio, fim);
+    console.log('Movimentações antes da paginação:', this.movimentacoes);
+  const inicio = this.paginaAtual * this.itensPorPagina;
+  const fim = inicio + this.itensPorPagina;
+  this.historicoPaginado = this.movimentacoes.slice(inicio, fim);
+  console.log('Itens da página atual:', this.historicoPaginado);
   }
 
   /**

@@ -57,11 +57,24 @@ export class MovimentacaoPage implements OnInit {
 
   async carregarAgendamentos() {
     try {
-      const url = `${environment.apiUrl}/services/agendamento.php`;
-      const response = await fetch(url);
-      this.agendamentos = await response.json() || [];
+      const response = await fetch(`${environment.apiUrl}/services/agendamentos.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+
+      const resultado = await response.json();
+      console.log('Resultado da API:', resultado);
+
+      if (resultado.sucesso) {
+
+        this.agendamentos = resultado.agendamentos.filter((agendamento: any) => agendamento.status !== 'concluido');
+        console.log('Agendamentos filtrados:', this.agendamentos);
+      } else {
+        console.error('Erro ao carregar agendamentos:', resultado.mensagem);
+      }
     } catch (error) {
-      console.error('Erro ao carregar agendamentos:', error);
+      console.error('Erro ao se comunicar com a API:', error);
     }
   }
 
