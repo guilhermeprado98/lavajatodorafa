@@ -19,7 +19,7 @@ export class AppComponent {
   logout() {
     Swal.fire({
       title: 'Deseja sair?',
-      text: 'Você será desconectado do sistema.',
+      text: 'Você será desconectado do aplicativo.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sim, sair',
