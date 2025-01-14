@@ -57,26 +57,24 @@ export class MovimentacaoPage implements OnInit {
 
   async carregarAgendamentos() {
     try {
-      const response = await fetch(`${environment.apiUrl}/services/agendamentos.php`, {
-        method: 'POST',
+      const response = await fetch(`${environment.apiUrl}/services/agendamento.php`, {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
 
-
       const resultado = await response.json();
-      console.log('Resultado da API:', resultado);
 
-      if (resultado.sucesso) {
-
-        this.agendamentos = resultado.agendamentos.filter((agendamento: any) => agendamento.status !== 'concluido');
-        console.log('Agendamentos filtrados:', this.agendamentos);
+      if (Array.isArray(resultado) && resultado.length > 0) {
+        // Filtra agendamentos com status diferente de 'concluido'
+        this.agendamentos = resultado.filter((agendamento: any) => agendamento.status !== 'concluido');
       } else {
-        console.error('Erro ao carregar agendamentos:', resultado.mensagem);
+        console.error('Erro ao carregar agendamentos: Nenhum agendamento encontrado');
       }
     } catch (error) {
       console.error('Erro ao se comunicar com a API:', error);
     }
   }
+
 
   onAgendamentoChange() {
     const agendamento = this.agendamentos.find(a => a.id === this.idAgendamentoSelecionado);

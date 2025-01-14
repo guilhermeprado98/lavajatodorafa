@@ -34,8 +34,6 @@ export class PerfilPage {
       const response = await fetch(`${environment.apiUrl}/services/usuarios.php?id=${this.userId}`);
       const res = await response.json();
 
-      console.log('respone',response);
-
       if (response.ok) {
         // Preenche os campos com os dados retornados
         this.perfilForm.patchValue({
@@ -86,6 +84,8 @@ export class PerfilPage {
         this.isDisabled = false;
         return;
       }
+
+      console.log('dadosAtualizados',dadosAtualizados);
 
       try {
 
