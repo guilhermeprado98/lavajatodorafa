@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { environment } from '../../environments/environment';
@@ -8,11 +8,17 @@ import { environment } from '../../environments/environment';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   email: string = '';
   senha: string = '';
 
   constructor(private router: Router) {}
+
+
+  ngOnInit() {
+    // Limpa o localStorage ao acessar a página de login
+    localStorage.removeItem('usuario');
+  }
 
   login() {
     const credenciais = { email: this.email, senha: this.senha };
