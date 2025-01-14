@@ -5,14 +5,13 @@ ion-content {
   align-items: center;
 }
 
-/* Centralizar o card */
 .perfil-card {
   max-width: 500px;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilizar inputs */
+
 ion-input {
   font-size: 16px;
   --padding-start: 10px;
@@ -22,7 +21,7 @@ ion-input {
   margin-top: 5%;
 }
 
-/* Label estilizado */
+
 ion-label {
   font-size: 14px;
   font-weight: bold;
@@ -30,6 +29,6 @@ ion-label {
 }
 
 .disabled-input {
-  pointer-events: none; /* Desabilita interação */
-  opacity: 0.5; /* Torna o campo visualmente desabilitado */
+  pointer-events: none;
+  opacity: 0.5;
 }

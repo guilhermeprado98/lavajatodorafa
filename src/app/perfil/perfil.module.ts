@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // Adicione ReactiveFormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { PerfilPageRoutingModule } from './perfil-routing.module';
@@ -10,7 +10,7 @@ import { PerfilPage } from './perfil.page';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule, // Adicione aqui também
+    ReactiveFormsModule,
     IonicModule,
     PerfilPageRoutingModule
   ],
