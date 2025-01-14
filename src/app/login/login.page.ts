@@ -38,9 +38,14 @@ export class LoginPage {
             icon: 'success',
             title: 'Login realizado com sucesso!',
             showConfirmButton: false,
-            timer: 1500,
+            timer: 1000,
+          }).then(() => {
+            this.router.navigate(['/home']).then(() => {
+              setTimeout(() => {
+                window.location.reload();
+              }, 50); // 3 segundos
+            });
           });
-          this.router.navigate(['/home']);
         } else {
           Swal.fire({
             icon: 'error',

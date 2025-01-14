@@ -1,14 +1,8 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
 
-  <a routerLink="/home" style="display: flex; align-items: center; margin: 10px; text-decoration: none;">
+  <a routerLink="/home" style="display: flex; align-items: center; margin: 10px; text-decoration: none; margin-top: 10%; margin-left: 5%;">
     <ion-icon name="arrow-back-outline" style="font-size: 24px; color: white;"></ion-icon>
     <span style="margin-left: 8px; color: white;">Voltar</span>
   </a>
@@ -36,8 +30,7 @@
 
   <!-- Mensagem caso não existam serviços -->
   <div *ngIf="servicosPaginados.length === 0" class="empty-state">
-    <ion-icon name="construct-outline"></ion-icon>
-    <p>Nenhum serviço encontrado.</p>
+    <p style="color: white;">Nenhum serviço encontrado.</p>
   </div>
 
   <!-- Paginação -->

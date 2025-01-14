@@ -30,9 +30,11 @@ export class HomePage {
         cancelButtonText: 'Não, cancelar',
       }).then((result) => {
         if (result.isConfirmed) {
-
           localStorage.clear();
-          this.router.navigate(['/login']);
+          localStorage.removeItem('usuario');
+          this.router.navigate(['/login']).then(() => {
+            window.location.reload();
+          });
         } else {
           console.log('Logout cancelado!');
         }

@@ -1,0 +1,35 @@
+ion-content {
+  --background: linear-gradient(to bottom, #0078d7, #cfcfcf);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Centralizar o card */
+.perfil-card {
+  max-width: 500px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilizar inputs */
+ion-input {
+  font-size: 16px;
+  --padding-start: 10px;
+  --padding-end: 10px;
+  height: 34px;
+  border-radius: 6px;
+  margin-top: 5%;
+}
+
+/* Label estilizado */
+ion-label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #374151;
+}
+
+.disabled-input {
+  pointer-events: none; /* Desabilita interação */
+  opacity: 0.5; /* Torna o campo visualmente desabilitado */
+}

@@ -1,0 +1,38 @@
+<ion-content>
+  <ion-card class="perfil-card">
+    <ion-card-content>
+      <form [formGroup]="perfilForm">
+        <ion-item>
+          <ion-label position="stacked" style="position: relative; top: 20%;">Nome</ion-label>
+          <ion-input formControlName="nome" [class.disabled-input]="isDisabled"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" style="position: relative; top: 20%;">Email</ion-label>
+          <ion-input type="email" formControlName="email" [class.disabled-input]="isDisabled"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" style="position: relative; top: 20%;">Celular</ion-label>
+          <ion-input type="tel" formControlName="celular" [class.disabled-input]="isDisabled"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked" style="position: relative; top: 20%;">Senha</ion-label>
+          <ion-input type="password" formControlName="senha" [class.disabled-input]="isDisabled"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="!isDisabled">
+          <ion-label position="stacked" style="position: relative; top: 20%;">Confirmar Senha</ion-label>
+          <ion-input type="password" formControlName="confirmarSenha" [class.disabled-input]="isDisabled"></ion-input>
+        </ion-item>
+
+        <div class="ion-padding">
+          <ion-button expand="block" (click)="toggleEditMode()">
+            {{ isDisabled ? 'Alterar' : 'Salvar' }}
+          </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

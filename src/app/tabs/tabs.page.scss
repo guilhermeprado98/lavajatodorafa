@@ -1,0 +1,35 @@
+ion-tab-bar {
+   --background: #f9f9f9; /* Cor de fundo do tab-bar */
+   --border-color: #ccc; /* Borda superior opcional */
+   border-top: 1px solid var(--border-color);
+
+   ion-tab-button {
+     --color: #666; /* Cor padrão do ícone e texto */
+     --color-selected: #007bff; /* Cor do ícone e texto selecionados */
+     --ripple-color: #007bff; /* Cor do efeito de clique */
+     font-weight: 600; /* Peso da fonte padrão */
+     text-transform: capitalize;
+
+     ion-icon {
+       color: var(--color); /* Define a cor do ícone */
+       transition: color 0.3s ease; /* Animação suave ao mudar de cor */
+     }
+
+     ion-label {
+       color: var(--color); /* Define a cor do texto */
+       transition: color 0.3s ease;
+     }
+
+     &.tab-selected {
+       font-weight: 600; /* Peso maior para a aba selecionada */
+
+       ion-icon {
+         color: var(--color-selected); /* Muda a cor do ícone ao selecionar */
+       }
+
+       ion-label {
+         color: var(--color-selected); /* Muda a cor do texto ao selecionar */
+       }
+     }
+   }
+ }

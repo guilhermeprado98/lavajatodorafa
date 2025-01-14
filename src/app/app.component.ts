@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import Swal from 'sweetalert2';
@@ -9,8 +9,15 @@ import Swal from 'sweetalert2';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  isLoggedIn: boolean = false;
   constructor(private router: Router,private menu : MenuController) {}
+
+  ngOnInit() {
+    // Verificar se 'usuario' está presente no localStorage
+    const userSession = localStorage.getItem('usuario');
+    this.isLoggedIn = userSession !== null; // Definir o estado de login
+  }
 
   closeMenu() {
     this.menu.close();
@@ -26,9 +33,11 @@ export class AppComponent {
       cancelButtonText: 'Não, cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-
         localStorage.clear();
-        this.router.navigate(['/login']);
+        localStorage.removeItem('usuario');
+        this.router.navigate(['/login']).then(() => {
+          window.location.reload();
+        });
       } else {
         console.log('Logout cancelado!');
       }
