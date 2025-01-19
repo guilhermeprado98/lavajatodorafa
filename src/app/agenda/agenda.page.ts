@@ -87,7 +87,7 @@ export class AgendaPage {
   }
 
   editarAgendamento(agendamento: any) {
-    // Exemplo de lógica de edição: popula os campos do formulário com os dados selecionados.
+
     this.novoAgendamento = { ...agendamento };
   }
 
@@ -122,7 +122,6 @@ export class AgendaPage {
   }
 
   async abrirModalRemoverAgenda(agendamento: any) {
-    console.log('agendamento',agendamento);
     const modal = await this.modalController.create({
       component: ManageServiceAgendaComponent,
       componentProps: {

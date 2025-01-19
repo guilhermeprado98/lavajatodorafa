@@ -52,9 +52,7 @@ export class HistoricoPage implements OnInit {
     }
   }
 
-  /**
-   * Atualiza os itens exibidos com base na página atual.
-   */
+
   atualizarPagina() {
     console.log('Movimentações antes da paginação:', this.movimentacoes);
   const inicio = this.paginaAtual * this.itensPorPagina;
