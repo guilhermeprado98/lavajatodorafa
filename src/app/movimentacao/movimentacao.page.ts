@@ -16,7 +16,7 @@ export class MovimentacaoPage implements OnInit {
   agendamentos: any[] = [];
   idAgendamentoSelecionado: number | null = null;
   paginaAtual: number = 1;
-  itensPorPagina: number = 1;
+  itensPorPagina: number = 10;
   totalPaginas: number = 1;
 
   constructor(
@@ -25,7 +25,7 @@ export class MovimentacaoPage implements OnInit {
 
   ngOnInit() {
     this.carregarMovimentacoes();
-    this.carregarAgendamentos(); // Novo método
+    this.carregarAgendamentos();
   }
 
   async carregarMovimentacoes() {
@@ -40,14 +40,14 @@ export class MovimentacaoPage implements OnInit {
     }
   }
 
-  // Atualiza os itens exibidos com base na página atual
+
   mostrarPagina() {
     const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
     const fim = inicio + this.itensPorPagina;
     this.movimentacoesVisiveis = this.movimentacoes.slice(inicio, fim);
   }
 
-  // Navegação entre páginas
+
   mudarPagina(numeroPagina: number) {
     if (numeroPagina >= 1 && numeroPagina <= this.totalPaginas) {
       this.paginaAtual = numeroPagina;
@@ -65,7 +65,7 @@ export class MovimentacaoPage implements OnInit {
       const resultado = await response.json();
 
       if (Array.isArray(resultado) && resultado.length > 0) {
-        // Filtra agendamentos com status diferente de 'concluido'
+
         this.agendamentos = resultado.filter((agendamento: any) => agendamento.status !== 'concluido');
       } else {
         console.error('Erro ao carregar agendamentos: Nenhum agendamento encontrado');
@@ -79,8 +79,8 @@ export class MovimentacaoPage implements OnInit {
   onAgendamentoChange() {
     const agendamento = this.agendamentos.find(a => a.id === this.idAgendamentoSelecionado);
     if (agendamento) {
-      this.veiculo = agendamento.veiculo; // Preenche o veículo do agendamento
-      this.observacoes = agendamento.observacoes; // Preenche as observações do agendamento
+      this.veiculo = agendamento.veiculo;
+      this.observacoes = agendamento.observacoes;
     } else {
       this.veiculo = '';
       this.observacoes = '';
