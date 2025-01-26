@@ -168,8 +168,10 @@ export class ManageServiceAgendaComponent implements OnInit {
       const resultado = await response.json();
 
       if (resultado?.sucesso) {
-        Swal.fire('Operação concluída com sucesso!', '', 'success');
-        this.modalController.dismiss({ resultado: true });
+        Swal.fire('Operação concluída com sucesso!', '', 'success').then(() => {
+          this.modalController.dismiss({ resultado: true });
+          location.reload();
+        });
       } else {
         Swal.fire(resultado.mensagem, '', 'error');
       }

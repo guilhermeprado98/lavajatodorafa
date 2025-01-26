@@ -18,6 +18,10 @@ export class MovimentacaoPage implements OnInit {
   paginaAtual: number = 1;
   itensPorPagina: number = 10;
   totalPaginas: number = 1;
+  nomeClienteFiltro: string = ''
+  dataInicial: string = '';
+  dataFinal: string = '';
+  movimentacoesFiltradas: any[] = [];
 
   constructor(
     private toastController: ToastController
@@ -26,6 +30,77 @@ export class MovimentacaoPage implements OnInit {
   ngOnInit() {
     this.carregarMovimentacoes();
     this.carregarAgendamentos();
+  }
+
+  limparFiltros() {
+    this.nomeClienteFiltro = '';
+    this.dataInicial = '';
+    this.dataFinal = '';
+    this.mostrarPagina();
+  }
+
+  aplicarFiltros() {
+    // Filtra as movimentações com base nos filtros de nome e datas
+    const movimentacoesFiltradas = this.movimentacoes.filter((movimentacao) => {
+      const dataEntrada = this.removerHora(new Date(movimentacao.data_hora_entrada));
+
+      const dataInicio = this.dataInicial ? this.removerHora(this.stringParaData(this.dataInicial)) : null;
+
+      const dataFim = this.dataFinal ? this.removerHora(this.stringParaData(this.dataFinal)) : null;
+
+
+      const filtroNome = this.nomeClienteFiltro
+        ? movimentacao.nome_cliente.toLowerCase().includes(this.nomeClienteFiltro.toLowerCase())
+        : true;
+
+      const filtroDataInicio = dataInicio ? dataEntrada >= dataInicio : true;
+      const filtroDataFim = dataFim ? dataEntrada <= dataFim : true;
+
+      return filtroNome && filtroDataInicio && filtroDataFim;
+    });
+
+    this.movimentacoesVisiveis = movimentacoesFiltradas;
+  }
+
+
+  removerHora(data: Date): Date {
+    const novaData = new Date(data);
+
+    novaData.setUTCHours(0, 0, 0, 0);
+
+    return novaData;
+  }
+
+
+  stringParaData(data: string): Date {
+
+    const partes = data.split('/');
+
+    return new Date(`${partes[2]}-${partes[1]}-${partes[0]}`);
+  }
+
+
+
+  formatarDataAoDigitar(campo: 'dataInicial' | 'dataFinal', evento: any) {
+    let valor = evento.target.value || '';
+
+    // Remove caracteres não numéricos
+    valor = valor.replace(/\D/g, '');
+
+    // Impede que o valor seja mais do que 8 caracteres (dd/mm/aaaa)
+    if (valor.length > 8) {
+      valor = valor.substring(0, 8);
+    }
+
+    // Formata o valor como dd/mm/aaaa
+    if (valor.length > 2 && valor.length <= 4) {
+      valor = `${valor.substring(0, 2)}/${valor.substring(2)}`;
+    } else if (valor.length > 4) {
+      valor = `${valor.substring(0, 2)}/${valor.substring(2, 4)}/${valor.substring(4, 8)}`;
+    }
+
+    // Atualiza o campo correspondente
+    this[campo] = valor;
   }
 
   async carregarMovimentacoes() {
@@ -161,6 +236,9 @@ export class MovimentacaoPage implements OnInit {
         this.mostrarToast(result.mensagem, result.sucesso ? 'success' : 'danger');
         if (result.sucesso) {
           this.carregarMovimentacoes();
+          setTimeout(() => {
+            location.reload();
+          }, 5);
         }
       } catch (error) {
         console.error('Erro ao registrar saída:', error);
