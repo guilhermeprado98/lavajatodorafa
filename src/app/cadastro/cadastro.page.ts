@@ -15,6 +15,8 @@ export class CadastroPage {
   confirmarSenha: string = '';
   celular: string = '';
   tipo: string = '';
+  mostrarSenha: boolean = false;
+  mostrarConfirmarSenha: boolean = false;
 
   constructor(private router: Router) {}
 
@@ -85,5 +87,13 @@ export class CadastroPage {
       input = `(${input.substring(0, 2)}) ${input.substring(2, 7)}-${input.substring(7, 11)}`;
     }
     event.target.value = input;
+  }
+  toggleSenha(tipo: string) {
+    console.log('tipo',tipo);
+    if (tipo === 'senha') {
+      this.mostrarSenha = !this.mostrarSenha;
+    } else if (tipo === 'confirmarSenha') {
+      this.mostrarConfirmarSenha = !this.mostrarConfirmarSenha;
+    }
   }
 }

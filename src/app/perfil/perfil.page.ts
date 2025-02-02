@@ -12,6 +12,8 @@ export class PerfilPage {
   perfilForm: FormGroup;
   isDisabled = true; // Inicia com os campos desabilitados
   userId: number;
+  mostrarSenha: boolean = false;
+  mostrarConfirmarSenha: boolean = false;
 
   constructor(private fb: FormBuilder) {
     // Inicializa o formulário com campos desabilitados
@@ -123,6 +125,14 @@ export class PerfilPage {
       }
     } else {
       Swal.fire('Erro', 'Formulário inválido!', 'error');
+    }
+  }
+
+  toggleSenha(tipo: string) {
+    if (tipo === 'senha') {
+      this.mostrarSenha = !this.mostrarSenha;
+    } else if (tipo === 'confirmarSenha') {
+      this.mostrarConfirmarSenha = !this.mostrarConfirmarSenha;
     }
   }
 }

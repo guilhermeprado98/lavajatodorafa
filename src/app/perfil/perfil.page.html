@@ -19,12 +19,23 @@
 
         <ion-item>
           <ion-label position="stacked" style="position: relative; top: 20%;">Senha</ion-label>
-          <ion-input type="password" formControlName="senha" [class.disabled-input]="isDisabled"></ion-input>
+          <ion-input [type]="mostrarSenha ? 'text' : 'password'" type="password" formControlName="senha" [class.disabled-input]="isDisabled"></ion-input>
+          <ion-icon
+          [name]="mostrarSenha ? 'eye-off' : 'eye'"
+          class="eye-icon"
+          (click)="toggleSenha('senha')">
+        </ion-icon>
+
         </ion-item>
 
         <ion-item *ngIf="!isDisabled">
           <ion-label position="stacked" style="position: relative; top: 20%;">Confirmar Senha</ion-label>
-          <ion-input type="password" formControlName="confirmarSenha" [class.disabled-input]="isDisabled"></ion-input>
+          <ion-input [type]="mostrarConfirmarSenha ? 'text' : 'password'" type="password" formControlName="confirmarSenha" [class.disabled-input]="isDisabled"></ion-input>
+          <ion-icon
+          [name]="mostrarConfirmarSenha ? 'eye-off' : 'eye'"
+          class="eye-icon"
+          (click)="toggleSenha('confirmarSenha')">
+        </ion-icon>
         </ion-item>
 
         <div class="ion-padding">

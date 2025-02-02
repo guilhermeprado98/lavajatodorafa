@@ -33,3 +33,17 @@ ion-label {
   pointer-events: none;
   opacity: 0.5;
 }
+
+.form-group {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: gray;
+  cursor: pointer;
+}

@@ -14,10 +14,20 @@
         <ion-input placeholder="E-mail" [(ngModel)]="email" name="email" required></ion-input>
       </div>
       <div class="form-group">
-        <ion-input placeholder="Senha" [(ngModel)]="senha" name="senha" type="password" maxlength="8" required></ion-input>
+        <ion-input [type]="mostrarSenha ? 'text' : 'password'" placeholder="Senha" [(ngModel)]="senha" name="senha" type="password" maxlength="8" required></ion-input>
+        <ion-icon
+        [name]="mostrarSenha ? 'eye-off' : 'eye'"
+        class="eye-icon"
+        (click)="toggleSenha('senha')">
+      </ion-icon>
       </div>
       <div class="form-group">
-        <ion-input placeholder="Confirmar Senha" [(ngModel)]="confirmarSenha" name="confirmarSenha" type="password" maxlength="8" required></ion-input>
+        <ion-input [type]="mostrarConfirmarSenha ? 'text' : 'password'" placeholder="Confirmar Senha" [(ngModel)]="confirmarSenha" name="confirmarSenha" type="password" maxlength="8" required></ion-input>
+        <ion-icon
+        [name]="mostrarConfirmarSenha ? 'eye-off' : 'eye'"
+        class="eye-icon"
+        (click)="toggleSenha('confirmarSenha')">
+      </ion-icon>
       </div>
       <div class="form-group">
         <ion-input placeholder="Celular" [(ngModel)]="celular" name="celular" type="tel" required (ionInput)="formatPhone($event)"></ion-input>
