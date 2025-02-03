@@ -11,16 +11,17 @@ import Swal from 'sweetalert2';
 export class ManageServiceAgendaComponent implements OnInit {
   @Input() operacao: 'add' | 'edit' | 'delete' = 'add';
   @Input() agendamento: any = null;
-  @Input() dadosUsuario: string = localStorage.getItem('usuario') || ''; // Recebe os dados do agendamento do componente pai
-
-  listaServicos: Array<any> = [];  // Lista para armazenar os serviços no select
+  @Input() dadosUsuario: string = localStorage.getItem('usuario') || '';
+  dataMinima = new Date().toISOString().split('T')[0];
+  horariosDisponiveis: string[] = [];
+  listaServicos: Array<any> = [];
   listaClientes: Array<any> = [];
 
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     this.carregarServicos();
-
+    this.agendamento.data = ''; // Garante que a data inicie vazia
 
     const UsuarioParse = this.dadosUsuario ? JSON.parse(this.dadosUsuario) : null;
 
@@ -40,7 +41,7 @@ export class ManageServiceAgendaComponent implements OnInit {
     }
 
 
-    // Garante que o agendamento tem valores padrão no modo add
+
     if (!this.agendamento) {
       this.agendamento = {
         id: '',
@@ -52,7 +53,7 @@ export class ManageServiceAgendaComponent implements OnInit {
         placa: '',
       };
     } else if (this.agendamento.data_horario) {
-      // Converte para formato ISO 8601, se necessário
+
       setTimeout(() => {
         this.agendamento.data_horario = this.formatarParaISO(this.agendamento.data_horario);
       });
@@ -180,4 +181,36 @@ export class ManageServiceAgendaComponent implements OnInit {
       Swal.fire('Erro ao se comunicar com a API.', '', 'error');
     }
   }
+
+  validarData() {
+    if (!this.agendamento.data) return;
+
+    const dataSelecionada = new Date(this.agendamento.data);
+    const diaSemana = dataSelecionada.getDay(); // 0 = Domingo, 6 = Sábado
+
+    if (diaSemana === 0 || diaSemana === 6) {
+      if (diaSemana === 0) {
+        alert("Selecione um dia útil! Domingo não é permitido.");
+        this.agendamento.data = '';
+        return;
+      }
+    }
+
+    this.atualizarHorariosDisponiveis(diaSemana);
+  }
+
+  atualizarHorariosDisponiveis(diaSemana: number) {
+    this.horariosDisponiveis = [];
+
+    let horaInicio = 8;
+    let horaFim = diaSemana === 6 ? 12 : 17; // Sábado até 12h, outros dias até 17h
+
+    for (let hora = horaInicio; hora <= horaFim; hora++) {
+      this.horariosDisponiveis.push(`${hora.toString().padStart(2, '0')}:00`);
+      if (hora !== horaFim) {
+        this.horariosDisponiveis.push(`${hora.toString().padStart(2, '0')}:30`);
+      }
+    }
+  }
+
 }

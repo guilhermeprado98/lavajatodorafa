@@ -18,7 +18,7 @@ export class MovimentacaoPage implements OnInit {
   paginaAtual: number = 1;
   itensPorPagina: number = 10;
   totalPaginas: number = 1;
-  nomeClienteFiltro: string = ''
+  nomeClienteFiltro: string = '';
   dataInicial: string = '';
   dataFinal: string = '';
   movimentacoesFiltradas: any[] = [];
@@ -40,7 +40,7 @@ export class MovimentacaoPage implements OnInit {
   }
 
   aplicarFiltros() {
-    // Filtra as movimentações com base nos filtros de nome e datas
+
     const movimentacoesFiltradas = this.movimentacoes.filter((movimentacao) => {
       const dataEntrada = this.removerHora(new Date(movimentacao.data_hora_entrada));
 
@@ -84,22 +84,21 @@ export class MovimentacaoPage implements OnInit {
   formatarDataAoDigitar(campo: 'dataInicial' | 'dataFinal', evento: any) {
     let valor = evento.target.value || '';
 
-    // Remove caracteres não numéricos
+
     valor = valor.replace(/\D/g, '');
 
-    // Impede que o valor seja mais do que 8 caracteres (dd/mm/aaaa)
+
     if (valor.length > 8) {
       valor = valor.substring(0, 8);
     }
 
-    // Formata o valor como dd/mm/aaaa
+
     if (valor.length > 2 && valor.length <= 4) {
       valor = `${valor.substring(0, 2)}/${valor.substring(2)}`;
     } else if (valor.length > 4) {
       valor = `${valor.substring(0, 2)}/${valor.substring(2, 4)}/${valor.substring(4, 8)}`;
     }
 
-    // Atualiza o campo correspondente
     this[campo] = valor;
   }
 

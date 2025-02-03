@@ -7,6 +7,38 @@
     <span style="margin-left: 8px; color: white;">Voltar</span>
   </a>
 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Filtros</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Data Inicial</ion-label>
+        <ion-input
+          [(ngModel)]="dataInicial"
+          placeholder="dd/mm/aaaa"
+          (ionInput)="formatarDataAoDigitar('dataInicial', $event)"
+          type="text"
+          maxlength="10"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Data Final</ion-label>
+        <ion-input
+          [(ngModel)]="dataFinal"
+          placeholder="dd/mm/aaaa"
+          (ionInput)="formatarDataAoDigitar('dataFinal', $event)"
+          type="text"
+          maxlength="10"
+        ></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="aplicarFiltros()">Aplicar Filtros</ion-button>
+    </ion-card-content>
+  </ion-card>
+  <ion-button expand="block" color="medium" (click)="limparFiltros()" style="width: 50%;
+  margin-left: 3%;">Limpar Filtros</ion-button>
+
   <!-- Lista de registros do histórico -->
   <div *ngIf="historicoPaginado.length > 0" class="historico-lista">
     <ion-card *ngFor="let registro of historicoPaginado">
