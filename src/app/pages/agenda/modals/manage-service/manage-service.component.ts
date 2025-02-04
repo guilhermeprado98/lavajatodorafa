@@ -21,7 +21,6 @@ export class ManageServiceAgendaComponent implements OnInit {
 
   ngOnInit() {
     this.carregarServicos();
-    this.agendamento.data = ''; // Garante que a data inicie vazia
 
     const UsuarioParse = this.dadosUsuario ? JSON.parse(this.dadosUsuario) : null;
 
@@ -72,6 +71,10 @@ export class ManageServiceAgendaComponent implements OnInit {
       .catch((error) => {
         console.error('Erro ao carregar serviços:', error);
       });
+  }
+
+  verificarDelivery(valor: boolean) {
+    this.agendamento.delivery = valor;
   }
 
   /**

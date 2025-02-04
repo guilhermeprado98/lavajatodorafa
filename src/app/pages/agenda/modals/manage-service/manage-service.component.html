@@ -32,11 +32,7 @@
 
     <ion-item>
       <ion-label position="stacked">Dia</ion-label>
-      <ion-datetime
-        [(ngModel)]="agendamento.data"
-        (ionChange)="validarData()"
-        [min]="dataMinima"
-        presentation="date">
+      <ion-datetime [(ngModel)]="agendamento.data" (ionChange)="validarData()" [min]="dataMinima" presentation="date">
       </ion-datetime>
     </ion-item>
 
@@ -44,7 +40,7 @@
       <ion-label position="stacked">Horário</ion-label>
       <ion-select [(ngModel)]="agendamento.horario" name="horario" required>
         <ion-select-option *ngFor="let horario of horariosDisponiveis" [value]="horario">
-          {{ horario }}
+          {{ horariosDisponiveis }}
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -54,6 +50,31 @@
       <ion-label position="stacked">Observações</ion-label>
       <ion-textarea [(ngModel)]="agendamento.observacoes" name="observacoes"></ion-textarea>
     </ion-item>
+
+    <ion-item>
+      <ion-label>A lavagem será delivery? (Iremos ao local onde o veículo estiver)</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-radio-group [(ngModel)]="agendamento.delivery">
+        <ion-item>
+          <ion-radio value="sim"></ion-radio>
+          <ion-label>Sim</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-radio value="nao"></ion-radio>
+          <ion-label>Não</ion-label>
+        </ion-item>
+      </ion-radio-group>
+
+
+      <small class="text-danger">
+        Caso selecione "Não", o serviço será realizada em nosso estabelecimento,sendo necessário o veículo ser trazido até nós.
+      </small>
+    </ion-item>
+
+
 
     <ion-item>
       <ion-label position="stacked">Serviço</ion-label>
@@ -69,10 +90,7 @@
     <p>Você deseja remover o agendamento de <strong>{{ agendamento.nome_cliente }}</strong>?</p>
   </div>
 
-  <ion-button
-    expand="block"
-    color="primary"
-    (click)="salvar()"
+  <ion-button expand="block" color="primary" (click)="salvar()"
     style="margin: auto; width: 50%; margin-top: 5%; margin-bottom: 5%;">
     {{ operacao === 'delete' ? 'Remover Agendamento' : 'Agendar' }}
   </ion-button>

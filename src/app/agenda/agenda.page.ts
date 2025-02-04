@@ -14,10 +14,14 @@ import { ManageServiceAgendaComponent } from '../pages/agenda/modals/manage-serv
 export class AgendaPage {
   agendamentos: any[] = [];
   agendamentosPaginados: any[] = [];
+  agendamentosFiltrados: any[] = [];
   mostrarForm: boolean = false;
   tipoUsuario: string = '';
   itensPorPagina = 10;
   paginaAtual = 0;
+  dataInicial: string = '';
+  dataFinal: string = '';
+  nomeClienteFiltro: string = '';
 
 
   novoAgendamento = {
@@ -28,20 +32,30 @@ export class AgendaPage {
     placa: '',
   };
 
-  constructor(private http: HttpClient,private modalController: ModalController) {
+  constructor(private http: HttpClient, private modalController: ModalController) {
 
-  const dadosUsuarios = localStorage.getItem('usuario');
-  if (dadosUsuarios) {
-    try {
-      const usuarios = JSON.parse(dadosUsuarios);
-      this.tipoUsuario = usuarios.tipo || 'cliente';
-    } catch (error) {
+    const dadosUsuarios = localStorage.getItem('usuario');
+    if (dadosUsuarios) {
+      try {
+        const usuarios = JSON.parse(dadosUsuarios);
+        this.tipoUsuario = usuarios.tipo || 'cliente';
+      } catch (error) {
+        this.tipoUsuario = 'cliente';
+      }
+    } else {
       this.tipoUsuario = 'cliente';
     }
-  } else {
-    this.tipoUsuario = 'cliente';
-  }
     this.carregarAgendamentos();
+  }
+
+
+  limparFiltros() {
+    this.nomeClienteFiltro = '';
+    this.dataInicial = '';
+    this.dataFinal = '';
+    this.agendamentosFiltrados = [...this.agendamentos];
+    this.paginaAtual = 0;
+    this.atualizarPagina();
   }
 
   carregarAgendamentos() {
@@ -155,5 +169,61 @@ export class AgendaPage {
 
   temMaisPaginas() {
     return this.paginaAtual < Math.ceil(this.agendamentos.length / this.itensPorPagina) - 1;
+  }
+
+
+  aplicarFiltros() {
+    this.agendamentosFiltrados = this.agendamentos.filter((agendamento) => {
+
+      const dataEntrada = this.removerHora(new Date(agendamento.data_horario));
+      const dataInicio = this.dataInicial ? this.removerHora(this.stringParaData(this.dataInicial)) : null;
+      const dataFim = this.dataFinal ? this.removerHora(this.stringParaData(this.dataFinal)) : null;
+
+      const filtroNome = this.nomeClienteFiltro
+        ? agendamento.nome_cliente.toLowerCase().includes(this.nomeClienteFiltro.toLowerCase())
+        : true;
+
+      const filtroDataInicio = dataInicio ? dataEntrada >= dataInicio : true;
+      const filtroDataFim = dataFim ? dataEntrada <= dataFim : true;
+
+      return filtroNome && filtroDataInicio && filtroDataFim;
+    });
+
+    this.paginaAtual = 0;
+    this.atualizarPagina();
+  }
+
+  atualizarPagina() {
+
+    const inicio = this.paginaAtual * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    this.agendamentosPaginados = this.agendamentosFiltrados.slice(inicio, fim);
+  }
+
+  removerHora(data: Date): Date {
+    const novaData = new Date(data);
+    novaData.setUTCHours(0, 0, 0, 0);
+    return novaData;
+  }
+
+  stringParaData(data: string): Date {
+    const partes = data.split('/');
+    return new Date(`${partes[2]}-${partes[1]}-${partes[0]}`);
+  }
+  formatarDataAoDigitar(campo: 'dataInicial' | 'dataFinal', evento: any) {
+    let valor = evento.target.value || '';
+    valor = valor.replace(/\D/g, '');
+
+    if (valor.length > 8) {
+      valor = valor.substring(0, 8);
+    }
+
+    if (valor.length > 2 && valor.length <= 4) {
+      valor = `${valor.substring(0, 2)}/${valor.substring(2)}`;
+    } else if (valor.length > 4) {
+      valor = `${valor.substring(0, 2)}/${valor.substring(2, 4)}/${valor.substring(4, 8)}`;
+    }
+
+    this[campo] = valor;
   }
 }
