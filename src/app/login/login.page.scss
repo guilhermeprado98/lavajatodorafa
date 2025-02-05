@@ -89,3 +89,16 @@ ion-content {
 ion-app {
   z-index: auto;
 }
+.form-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 2;
+}

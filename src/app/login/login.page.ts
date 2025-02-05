@@ -11,8 +11,9 @@ import { environment } from '../../environments/environment';
 export class LoginPage implements OnInit {
   email: string = '';
   senha: string = '';
+  mostrarSenha = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
 
   ngOnInit() {
@@ -74,5 +75,10 @@ export class LoginPage implements OnInit {
         });
       });
   }
+
+  toggleSenha() {
+    this.mostrarSenha = !this.mostrarSenha;
+  }
+
 
 }
