@@ -61,10 +61,12 @@ export class AgendaPage {
   carregarAgendamentos() {
     this.http.get(`${environment.apiUrl}/services/agendamento.php`).subscribe(
       (res: any) => {
+        console.log('Agendamentos:', res);
         // Se for um cliente, filtra apenas os agendamentos do próprio cliente
         if (this.tipoUsuario === 'cliente') {
           const dadosUsuarios = localStorage.getItem('usuario');
           const usuario = dadosUsuarios ? JSON.parse(dadosUsuarios) : null;
+
 
           this.agendamentos = res.filter((agendamento: any) => agendamento.cliente_id === usuario.id); // Ajuste conforme a lógica
         } else {

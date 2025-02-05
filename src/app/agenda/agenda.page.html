@@ -60,9 +60,11 @@
 
         </ion-card-header>
         <ion-card-content>
-          <p><strong>Data/Horário:</strong> {{ agendamento.data_horario }}</p>
+          <p><strong>Data/Horário:</strong> {{ agendamento.data | date:'dd/MM/yyyy' }} {{agendamento.horario}}</p>
           <p><strong>Serviço:</strong> {{ agendamento.nome_servico }}</p>
           <p><strong>Observações:</strong> {{ agendamento.observacoes }}</p>
+          <p><strong>Delivery:</strong> {{ agendamento.delivery }}</p>
+          <p><strong>Endereco:</strong> {{ agendamento.endereco }}</p>
           <ion-button size="small" *ngIf="tipoUsuario === 'admin'" fill="outline" (click)="abrirModalEditarAgenda(agendamento)">Editar</ion-button>
           <ion-button size="small" *ngIf="tipoUsuario === 'admin'" color="danger" (click)="abrirModalRemoverAgenda(agendamento)">Remover</ion-button>
         </ion-card-content>

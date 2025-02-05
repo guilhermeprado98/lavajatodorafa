@@ -16,12 +16,12 @@ export class ManageServiceAgendaComponent implements OnInit {
   horariosDisponiveis: string[] = [];
   listaServicos: Array<any> = [];
   listaClientes: Array<any> = [];
+  tipoUsuario = JSON.parse(this.dadosUsuario).tipo;
 
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {
     this.carregarServicos();
-
     const UsuarioParse = this.dadosUsuario ? JSON.parse(this.dadosUsuario) : null;
 
     if (UsuarioParse.tipo === 'admin') {
@@ -46,17 +46,21 @@ export class ManageServiceAgendaComponent implements OnInit {
         id: '',
         nome: '',
         veiculo: '',
-        data_horario: '',
+        data: '',
         observacoes: '',
         servico_id: '',
         placa: '',
+        endereco: '',
+        delivery: '',
       };
-    } else if (this.agendamento.data_horario) {
+    } else if (this.agendamento.data) {
 
       setTimeout(() => {
-        this.agendamento.data_horario = this.formatarParaISO(this.agendamento.data_horario);
+        this.agendamento.data = this.formatarParaISO(this.agendamento.data);
       });
     }
+
+    this.atualizarHorariosDisponiveis(new Date().getDay());
   }
 
   /**
@@ -121,21 +125,51 @@ export class ManageServiceAgendaComponent implements OnInit {
    * Salva os dados no backend com base na operação (add, edit ou delete)
    */
   async salvar() {
+
+    const nomesAmigaveis: { [key: string]: string } = {
+      veiculo: "Veículo",
+      placa: "Placa",
+      data: "Data",
+      observacoes: "Observações",
+      servico_id: "Serviço",
+      delivery: "Delivery",
+      horario: "Horário"
+    };
+
+    const camposObrigatorios = Object.keys(nomesAmigaveis);
+
+    for (const campo of camposObrigatorios) {
+      if (!this.agendamento[campo]) {
+        Swal.fire(`O campo "${nomesAmigaveis[campo]}" é obrigatório.`, "", "warning");
+        return;
+      }
+    }
+
+    this.agendamento.data = this.agendamento.data.split('T')[0];
     try {
       let url = '';
       let method = 'POST';
       let body = null;
+      let idcliente = null;
+      if(this.tipoUsuario === 'cliente'){
+        idcliente = JSON.parse(this.dadosUsuario).id;
+      }else{
+        idcliente = this.agendamento.cliente_id;
+      }
 
       if (this.operacao === 'add') {
         url = `${environment.apiUrl}/services/agendamento.php`;
         body = JSON.stringify({
           operacao: 'add',
-          id_cliente: this.agendamento.cliente_id,
+          id_cliente: idcliente,
           veiculo: this.agendamento.veiculo,
-          data_horario: this.agendamento.data_horario,
+          data: this.agendamento.data,
           observacoes: this.agendamento.observacoes,
           servico_id: this.agendamento.servico_id,
           placa: this.agendamento.placa,
+          delivery: this.agendamento.delivery,
+          endereco: this.agendamento.endereco,
+          horario: this.agendamento.horario,
         });
       }
 
@@ -147,10 +181,13 @@ export class ManageServiceAgendaComponent implements OnInit {
           id_cliente: this.agendamento.cliente_id,
           id: this.agendamento.id,
           veiculo: this.agendamento.veiculo,
-          data_horario: this.agendamento.data_horario,
+          data: this.agendamento.data,
           observacoes: this.agendamento.observacoes,
           servico_id: this.agendamento.servico_id,
           placa: this.agendamento.placa,
+          delivery: this.agendamento.delivery,
+          endereco: this.agendamento.endereco,
+          horario: this.agendamento.horario,
         });
       }
 
@@ -170,7 +207,7 @@ export class ManageServiceAgendaComponent implements OnInit {
       });
 
       const resultado = await response.json();
-
+      console.log('resultado',resultado);
       if (resultado?.sucesso) {
         Swal.fire('Operação concluída com sucesso!', '', 'success').then(() => {
           this.modalController.dismiss({ resultado: true });
@@ -185,28 +222,30 @@ export class ManageServiceAgendaComponent implements OnInit {
     }
   }
 
+  isSunday() {
+    return new Date(this.agendamento.data).getDay() === 0;  // Retorna true se for domingo
+  }
+
   validarData() {
     if (!this.agendamento.data) return;
 
     const dataSelecionada = new Date(this.agendamento.data);
     const diaSemana = dataSelecionada.getDay(); // 0 = Domingo, 6 = Sábado
 
-    if (diaSemana === 0 || diaSemana === 6) {
-      if (diaSemana === 0) {
-        alert("Selecione um dia útil! Domingo não é permitido.");
-        this.agendamento.data = '';
-        return;
-      }
+    if (diaSemana === 0) {
+      Swal.fire("Selecione um dia útil! Domingo não é permitido.", '', 'error');
+      this.agendamento.data = '';
+      return;
     }
 
-    this.atualizarHorariosDisponiveis(diaSemana);
+    this.atualizarHorariosDisponiveis(diaSemana);  // Atualiza horários ao selecionar a data
   }
 
   atualizarHorariosDisponiveis(diaSemana: number) {
     this.horariosDisponiveis = [];
 
     let horaInicio = 8;
-    let horaFim = diaSemana === 6 ? 12 : 17; // Sábado até 12h, outros dias até 17h
+    let horaFim = (diaSemana === 6) ? 12 : 17; // Sábado até 12h, outros dias até 17h
 
     for (let hora = horaInicio; hora <= horaFim; hora++) {
       this.horariosDisponiveis.push(`${hora.toString().padStart(2, '0')}:00`);

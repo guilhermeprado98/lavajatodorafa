@@ -1,39 +1,45 @@
-
-
 <ion-content>
   <a routerLink="/login" style="display: flex; align-items: center; margin: 10px; text-decoration: underline; text-decoration-color: white; margin-top: 10%; margin-left: 3%;">
     <ion-icon name="arrow-back-outline" style="font-size: 24px; color: white;"></ion-icon>
     <span style="margin-left: 8px; color: white;">Voltar</span>
   </a>
   <div class="form-container">
-    <form (submit)="cadastrar()">
+    <form #formCadastro="ngForm" (ngSubmit)="cadastrar()" novalidate>
       <div class="form-group">
-        <ion-input placeholder="Nome" [(ngModel)]="nome" name="nome" required></ion-input>
+        <ion-input placeholder="Nome" [(ngModel)]="nome" name="nome" required #nomeModel="ngModel"></ion-input>
+        <div *ngIf="nomeModel.invalid && nomeModel.touched" class="error-message">Nome é obrigatório.</div>
       </div>
       <div class="form-group">
-        <ion-input placeholder="E-mail" [(ngModel)]="email" name="email" required></ion-input>
+        <ion-input placeholder="E-mail" [(ngModel)]="email" name="email" required email #emailModel="ngModel"></ion-input>
+        <div *ngIf="emailModel.invalid && emailModel.touched" class="error-message">E-mail inválido.</div>
       </div>
       <div class="form-group">
-        <ion-input [type]="mostrarSenha ? 'text' : 'password'" placeholder="Senha" [(ngModel)]="senha" name="senha" type="password" maxlength="8" required></ion-input>
-        <ion-icon
-        [name]="mostrarSenha ? 'eye-off' : 'eye'"
-        class="eye-icon"
-        (click)="toggleSenha('senha')">
-      </ion-icon>
+        <ion-input [type]="mostrarSenha ? 'text' : 'password'" placeholder="Senha" [(ngModel)]="senha" name="senha" required minlength="6" #senhaModel="ngModel"></ion-input>
+        <ion-icon [name]="mostrarSenha ? 'eye-off' : 'eye'" class="eye-icon" (click)="toggleSenha('senha')"></ion-icon>
+        <div *ngIf="senhaModel.invalid && senhaModel.touched" class="error-message">A senha deve ter no mínimo 6 caracteres.</div>
       </div>
       <div class="form-group">
-        <ion-input [type]="mostrarConfirmarSenha ? 'text' : 'password'" placeholder="Confirmar Senha" [(ngModel)]="confirmarSenha" name="confirmarSenha" type="password" maxlength="8" required></ion-input>
-        <ion-icon
-        [name]="mostrarConfirmarSenha ? 'eye-off' : 'eye'"
-        class="eye-icon"
-        (click)="toggleSenha('confirmarSenha')">
-      </ion-icon>
+        <ion-input [type]="mostrarConfirmarSenha ? 'text' : 'password'" placeholder="Confirmar Senha" [(ngModel)]="confirmarSenha" name="confirmarSenha" required #confirmarSenhaModel="ngModel"></ion-input>
+        <ion-icon [name]="mostrarConfirmarSenha ? 'eye-off' : 'eye'" class="eye-icon" (click)="toggleSenha('confirmarSenha')"></ion-icon>
+        <div *ngIf="confirmarSenhaModel.invalid && confirmarSenhaModel.touched" class="error-message">Confirmação de senha é obrigatória.</div>
+        <div *ngIf="senha !== confirmarSenha && confirmarSenhaModel.touched" class="error-message">As senhas não coincidem.</div>
       </div>
       <div class="form-group">
-        <ion-input placeholder="Celular" [(ngModel)]="celular" name="celular" type="tel" required (ionInput)="formatPhone($event)"></ion-input>
+        <ion-input
+          placeholder="Celular"
+          [(ngModel)]="celular"
+          name="celular"
+          type="tel"
+          required
+          (ionInput)="formatPhone($event)"
+          maxlength="15"
+          #celularModel="ngModel">
+        </ion-input>
+
+        <div *ngIf="celularModel.invalid && celularModel.touched" class="error-message">Celular é obrigatório.</div>
       </div>
       <div class="form-actions">
-        <ion-button type="submit" expand="block"><strong>Cadastrar</strong></ion-button>
+        <ion-button type="submit" expand="block" [disabled]="formCadastro.invalid"><strong>Cadastrar</strong></ion-button>
       </div>
     </form>
   </div>

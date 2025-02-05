@@ -11,15 +11,15 @@
 
 <ion-content>
   <form *ngIf="operacao !== 'delete'" (submit)="salvar()" class="agendamento-form">
-    <ion-item>
+    <ion-item *ngIf="tipoUsuario === 'admin'">
       <ion-label position="stacked">Cliente</ion-label>
       <ion-select [(ngModel)]="agendamento.cliente_id" name="cliente" required>
         <ion-select-option *ngFor="let cliente of listaClientes" [value]="cliente.id">
           {{ cliente.nome }}
         </ion-select-option>
+        <ion-select-option *ngIf="!listaClientes.length" value="" disabled>Sem clientes disponíveis</ion-select-option>
       </ion-select>
     </ion-item>
-
     <ion-item>
       <ion-label position="stacked">Veículo</ion-label>
       <ion-input [(ngModel)]="agendamento.veiculo" name="veiculo" required></ion-input>
@@ -32,7 +32,13 @@
 
     <ion-item>
       <ion-label position="stacked">Dia</ion-label>
-      <ion-datetime [(ngModel)]="agendamento.data" (ionChange)="validarData()" [min]="dataMinima" presentation="date">
+      <ion-datetime
+        [(ngModel)]="agendamento.data"
+        (ionChange)="validarData()"
+        [min]="dataMinima"
+        [disabled]="isSunday()"
+        presentation="date"
+        name="data">
       </ion-datetime>
     </ion-item>
 
@@ -40,11 +46,10 @@
       <ion-label position="stacked">Horário</ion-label>
       <ion-select [(ngModel)]="agendamento.horario" name="horario" required>
         <ion-select-option *ngFor="let horario of horariosDisponiveis" [value]="horario">
-          {{ horariosDisponiveis }}
+          {{ horario }}
         </ion-select-option>
       </ion-select>
     </ion-item>
-
 
     <ion-item>
       <ion-label position="stacked">Observações</ion-label>
@@ -56,7 +61,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-radio-group [(ngModel)]="agendamento.delivery">
+      <ion-radio-group [(ngModel)]="agendamento.delivery" name="delivery" required>
         <ion-item>
           <ion-radio value="sim"></ion-radio>
           <ion-label>Sim</ion-label>
@@ -68,13 +73,15 @@
         </ion-item>
       </ion-radio-group>
 
-
       <small class="text-danger">
-        Caso selecione "Não", o serviço será realizada em nosso estabelecimento,sendo necessário o veículo ser trazido até nós.
+        Caso selecione "Não", o serviço será realizado em nosso estabelecimento, sendo necessário o veículo ser trazido até nós.
       </small>
     </ion-item>
 
-
+    <ion-item *ngIf="agendamento.delivery === 'sim'">
+      <ion-label position="stacked">Endereço da Lavagem</ion-label>
+      <ion-input [(ngModel)]="agendamento.endereco" name="endereco"></ion-input>
+    </ion-item>
 
     <ion-item>
       <ion-label position="stacked">Serviço</ion-label>
@@ -84,6 +91,7 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
+
   </form>
 
   <div *ngIf="operacao === 'delete'" style="text-align: center; padding: 10px;">
