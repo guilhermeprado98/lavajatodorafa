@@ -61,16 +61,16 @@ export class AgendaPage {
   carregarAgendamentos() {
     this.http.get(`${environment.apiUrl}/services/agendamento.php`).subscribe(
       (res: any) => {
-        console.log('Agendamentos:', res);
-        // Se for um cliente, filtra apenas os agendamentos do próprio cliente
+
+
         if (this.tipoUsuario === 'cliente') {
           const dadosUsuarios = localStorage.getItem('usuario');
           const usuario = dadosUsuarios ? JSON.parse(dadosUsuarios) : null;
 
 
-          this.agendamentos = res.filter((agendamento: any) => agendamento.cliente_id === usuario.id); // Ajuste conforme a lógica
+          this.agendamentos = res.filter((agendamento: any) => agendamento.cliente_id === usuario.id);
         } else {
-          // Se for admin, mostra todos os agendamentos
+
           this.agendamentos = res;
         }
         this.atualizarListaPaginada();
@@ -81,7 +81,7 @@ export class AgendaPage {
 
 
   toggleForm() {
-    this.mostrarForm = !this.mostrarForm; // Alterna a visibilidade do formulário
+    this.mostrarForm = !this.mostrarForm;
   }
 
   async abrirModalAdicionarAgenda() {
@@ -177,7 +177,7 @@ export class AgendaPage {
   aplicarFiltros() {
     this.agendamentosFiltrados = this.agendamentos.filter((agendamento) => {
 
-      const dataEntrada = this.removerHora(new Date(agendamento.data_horario));
+      const dataEntrada = this.removerHora(new Date(agendamento.data));
       const dataInicio = this.dataInicial ? this.removerHora(this.stringParaData(this.dataInicial)) : null;
       const dataFim = this.dataFinal ? this.removerHora(this.stringParaData(this.dataFinal)) : null;
 
