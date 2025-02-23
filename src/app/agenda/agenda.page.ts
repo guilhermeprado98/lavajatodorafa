@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 import Swal from 'sweetalert2';
+import { ActivatedRoute } from '@angular/router';
 import { ManageServiceAgendaComponent } from '../pages/agenda/modals/manage-service/manage-service.component';
 
 
@@ -11,7 +12,7 @@ import { ManageServiceAgendaComponent } from '../pages/agenda/modals/manage-serv
   templateUrl: './agenda.page.html',
   styleUrls: ['./agenda.page.scss'],
 })
-export class AgendaPage {
+export class AgendaPage implements OnInit {
   agendamentos: any[] = [];
   agendamentosPaginados: any[] = [];
   agendamentosFiltrados: any[] = [];
@@ -22,6 +23,7 @@ export class AgendaPage {
   dataInicial: string = '';
   dataFinal: string = '';
   nomeClienteFiltro: string = '';
+  servicoId: string | null = null;
 
 
   novoAgendamento = {
@@ -32,7 +34,7 @@ export class AgendaPage {
     placa: '',
   };
 
-  constructor(private http: HttpClient, private modalController: ModalController) {
+  constructor(private http: HttpClient, private modalController: ModalController,private route: ActivatedRoute) {
 
     const dadosUsuarios = localStorage.getItem('usuario');
     if (dadosUsuarios) {
@@ -46,6 +48,11 @@ export class AgendaPage {
       this.tipoUsuario = 'cliente';
     }
     this.carregarAgendamentos();
+  }
+
+  ngOnInit() {
+    this.servicoId = this.route.snapshot.paramMap.get('id');
+    console.log('Serviço selecionado para agendamento:', this.servicoId);
   }
 
 

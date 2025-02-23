@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ManageServiceComponent } from '../pages/works/modals/manage-service/manage-service.component';
 import { environment } from '../../environments/environment';
+import { ManageServiceAgendaComponent } from '../pages/agenda/modals/manage-service/manage-service.component';
 
 @Component({
   selector: 'app-works',
@@ -33,6 +34,18 @@ export class WorksPage implements OnInit {
     }
 
     this.carregarServicos();
+  }
+
+  async abrirModalAdicionarAgenda(servico: any) {
+    const modal = await this.modalController.create({
+      component: ManageServiceAgendaComponent,
+      componentProps: {
+        operacao: 'add',
+        servico, // Passando o serviço selecionado
+      },
+    });
+
+    await modal.present();
   }
 
   carregarServicos() {

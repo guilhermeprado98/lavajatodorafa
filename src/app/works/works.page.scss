@@ -60,3 +60,19 @@ ion-card-title,
 ion-card-subtitle {
   text-align: center;
 }
+.botoes-acoes {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+}
+
+.botoes-admin {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.custom-button::part(native) {
+  border-radius: 10px;
+}

@@ -12,6 +12,7 @@ export class ManageServiceAgendaComponent implements OnInit {
   @Input() operacao: 'add' | 'edit' | 'delete' = 'add';
   @Input() agendamento: any = null;
   @Input() dadosUsuario: string = localStorage.getItem('usuario') || '';
+  @Input() servico: any = null;
   dataMinima = new Date().toISOString().split('T')[0];
   horariosDisponiveis: string[] = [];
   listaServicos: Array<any> = [];
@@ -22,6 +23,7 @@ export class ManageServiceAgendaComponent implements OnInit {
 
   ngOnInit() {
     this.carregarServicos();
+
     const UsuarioParse = this.dadosUsuario ? JSON.parse(this.dadosUsuario) : null;
 
     if (UsuarioParse.tipo === 'admin') {
@@ -59,6 +61,10 @@ export class ManageServiceAgendaComponent implements OnInit {
         this.agendamento.data = this.formatarParaISO(this.agendamento.data);
       });
     }
+    if (this.servico) {
+      this.agendamento.servico_id = this.servico.id;
+    }
+
 
     this.atualizarHorariosDisponiveis(new Date().getDay());
   }

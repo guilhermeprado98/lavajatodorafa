@@ -17,16 +17,38 @@
     <ion-card *ngFor="let servico of servicosPaginados">
       <ion-card-header>
         <ion-card-title>{{ servico.nome }}</ion-card-title>
-
       </ion-card-header>
       <ion-card-content>
         <p><strong>Descrição:</strong> {{ servico.descricao }}</p>
         <p><strong>Preço:</strong> R$ {{ servico.preco }}</p>
-        <ion-button size="small" *ngIf="tipoUsuario === 'admin'" fill="outline" (click)="abrirModalEditarServico(servico)">Editar</ion-button>
-        <ion-button size="small" *ngIf="tipoUsuario === 'admin'" color="danger" (click)="abrirModalRemoverServico(servico)">Remover</ion-button>
+
+        <div class="botoes-acoes">
+          <ion-button expand="full" color="primary" (click)="abrirModalAdicionarAgenda(servico)" class="custom-button">
+            Agendar Serviço
+          </ion-button>
+
+        </div>
+
+        <div class="botoes-admin" *ngIf="tipoUsuario === 'admin'">
+          <ion-button
+            size="small"
+            fill="outline"
+            (click)="abrirModalEditarServico(servico)"
+          >
+            Editar
+          </ion-button>
+          <ion-button
+            size="small"
+            color="danger"
+            (click)="abrirModalRemoverServico(servico)"
+          >
+            Remover
+          </ion-button>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>
+
 
   <!-- Mensagem caso não existam serviços -->
   <div *ngIf="servicosPaginados.length === 0" class="empty-state">
