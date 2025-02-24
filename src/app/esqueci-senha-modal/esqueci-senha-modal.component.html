@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Recuperar Senha</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content">
+    <ion-input
+      [(ngModel)]="email"
+      placeholder="Digite seu e-mail"
+      type="email"
+      required
+      clear-input
+      class="email-input"
+    ></ion-input>
+    <ion-button expand="full" color="primary" (click)="enviarCodigo()">Enviar Código</ion-button>
+
+    <!-- Campo para inserir o código (aparece só depois de enviar o código) -->
+    <div *ngIf="codigoEnviado">
+      <ion-input
+        [(ngModel)]="codigo"
+        placeholder="Digite o código"
+        type="text"
+        required
+        class="codigo-input"
+      ></ion-input>
+      <ion-button expand="full" color="primary" (click)="validarCodigo()">Validar Código</ion-button>
+    </div>
+  </div>
+</ion-content>

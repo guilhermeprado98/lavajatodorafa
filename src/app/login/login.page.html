@@ -27,12 +27,17 @@
         <ion-button type="submit" expand="block"><strong>Login</strong></ion-button>
       </div>
     </form>
+
     <div class="register-link">
 
       <span>Ainda não tem cadastro?</span>
       <a routerLink="/cadastro" style="text-decoration: underline; margin-top: 2%;">
       <span><strong>Cadastre-se aqui</strong></span>
       </a>
+    </div>
+    <div class="forgot-password-link" style="margin-top: 2%">
+      <span style="margin-right: 2%;">Esqueceu sua senha?</span>
+      <a href="javascript:void(0)" (click)="abrirModalEsqueciSenha()">Clique aqui</a>
     </div>
   </div>
 </ion-content>

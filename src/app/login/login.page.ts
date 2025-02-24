@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { environment } from '../../environments/environment';
+import { ModalController } from '@ionic/angular';
+import { EsqueciSenhaModalComponent } from '../esqueci-senha-modal/esqueci-senha-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +15,12 @@ export class LoginPage implements OnInit {
   senha: string = '';
   mostrarSenha = false;
 
-  constructor(private router: Router) { }
+
+  constructor(private router: Router,private modalController: ModalController) { }
 
 
   ngOnInit() {
-    // Limpa o localStorage ao acessar a página de login
+
     localStorage.removeItem('usuario');
   }
 
@@ -78,6 +81,14 @@ export class LoginPage implements OnInit {
 
   toggleSenha() {
     this.mostrarSenha = !this.mostrarSenha;
+  }
+
+  async abrirModalEsqueciSenha() {
+    const modal = await this.modalController.create({
+      component: EsqueciSenhaModalComponent, // Criar esse componente de modal
+    });
+
+    return await modal.present();
   }
 
 

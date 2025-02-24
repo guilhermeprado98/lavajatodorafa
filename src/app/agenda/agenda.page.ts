@@ -51,7 +51,7 @@ export class AgendaPage implements OnInit {
   }
 
   ngOnInit() {
-    this.servicoId = this.route.snapshot.paramMap.get('id');
+
     console.log('Serviço selecionado para agendamento:', this.servicoId);
   }
 
