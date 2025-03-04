@@ -138,7 +138,6 @@ export class ManageServiceAgendaComponent implements OnInit {
       data: "Data",
       observacoes: "Observações",
       servico_id: "Serviço",
-      delivery: "Delivery",
       horario: "Horário"
     };
 
@@ -249,16 +248,48 @@ export class ManageServiceAgendaComponent implements OnInit {
 
   atualizarHorariosDisponiveis(diaSemana: number) {
     this.horariosDisponiveis = [];
-
     let horaInicio = 8;
-    let horaFim = (diaSemana === 6) ? 12 : 17; // Sábado até 12h, outros dias até 17h
+    let horaFim = diaSemana === 6 ? 12 : 17; // Sábado até 12h, outros dias até 17h
 
-    for (let hora = horaInicio; hora <= horaFim; hora++) {
-      this.horariosDisponiveis.push(`${hora.toString().padStart(2, '0')}:00`);
-      if (hora !== horaFim) {
-        this.horariosDisponiveis.push(`${hora.toString().padStart(2, '0')}:30`);
-      }
-    }
+    // Enviar a data para o PHP verificar os horários ocupados
+    const dataSelecionada = new Date(this.agendamento.data);
+    const dataString = dataSelecionada.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+    // Requisição ao PHP para obter horários ocupados
+    fetch(`${environment.apiUrl}/services/verificar-horarios.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: dataString })
+    })
+      .then(response => response.json())
+      .then(data => {
+        const horariosOcupados = data.horariosOcupados; // Horários ocupados retornados do PHP
+        console.log('Horários ocupados:', horariosOcupados); // Debugging para verificar os dados
+
+        for (let hora = horaInicio; hora <= horaFim; hora++) {
+          const horaString = `${hora.toString().padStart(2, '0')}:00`;
+          const meiaHoraString = `${hora.toString().padStart(2, '0')}:30`;
+
+          // Verifique se o horário já está ocupado mais de 2 vezes
+          if (!horariosOcupados[horaString] || horariosOcupados[horaString] < 2) {
+            console.log(`Horário disponível: ${horaString}`); // Debugging
+            this.horariosDisponiveis.push(horaString);
+          }
+
+          if (!horariosOcupados[meiaHoraString] || horariosOcupados[meiaHoraString] < 2) {
+            console.log(`Horário disponível: ${meiaHoraString}`); // Debugging
+            this.horariosDisponiveis.push(meiaHoraString);
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao verificar horários:', error);
+        Swal.fire('Erro ao verificar horários disponíveis.', '', 'error');
+      });
   }
+
+
+
+
 
 }
