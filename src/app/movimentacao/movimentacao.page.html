@@ -16,7 +16,7 @@
         <ion-label position="stacked">Agendamento</ion-label>
         <ion-select [(ngModel)]="idAgendamentoSelecionado" placeholder="Selecione um agendamento" (ionChange)="onAgendamentoChange()">
           <ion-select-option *ngFor="let agendamento of agendamentos" [value]="agendamento.id">
-            {{ agendamento.nome_cliente }} - {{ agendamento.data_horario | date: 'short' }}
+            {{ agendamento.veiculo }} {{ agendamento.placa }} - {{ agendamento.data }} {{ agendamento.horario }}
           </ion-select-option>
         </ion-select>
       </ion-item>
