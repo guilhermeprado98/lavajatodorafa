@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Recuperar Senha</ion-title>
+    <ion-title>Recuperação de Senha</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="fecharModal()">Fechar</ion-button>
     </ion-buttons>
@@ -9,18 +9,21 @@
 
 <ion-content>
   <div class="content">
-    <ion-input
-      [(ngModel)]="email"
-      placeholder="Digite seu e-mail"
-      type="email"
-      required
-      clear-input
-      class="email-input"
-    ></ion-input>
-    <ion-button expand="full" color="primary" (click)="enviarCodigo()">Enviar Código</ion-button>
+    <!-- Etapa 1: Inserir o e-mail -->
+    <div *ngIf="etapa === 1">
+      <ion-input
+        [(ngModel)]="email"
+        placeholder="Digite seu e-mail"
+        type="email"
+        required
+        clear-input
+      ></ion-input>
+      <ion-button expand="full" color="primary" (click)="enviarCodigo()"
+      class="botao-custom" [disabled]="carregando">Enviar Código</ion-button>
+    </div>
 
-    <!-- Campo para inserir o código (aparece só depois de enviar o código) -->
-    <div *ngIf="codigoEnviado">
+    <!-- Etapa 2: Inserir o código -->
+    <div *ngIf="etapa === 2">
       <ion-input
         [(ngModel)]="codigo"
         placeholder="Digite o código"
@@ -28,7 +31,53 @@
         required
         class="codigo-input"
       ></ion-input>
-      <ion-button expand="full" color="primary" (click)="validarCodigo()">Validar Código</ion-button>
+      <ion-button expand="full" color="primary" (click)="validarCodigo()"
+      class="botao-custom">Validar Código</ion-button>
+    </div>
+
+    <!-- Etapa 3: Definir nova senha -->
+    <div *ngIf="etapa === 3">
+      <!-- Senha -->
+      <div class="password-container">
+        <ion-input
+          [(ngModel)]="novaSenha"
+          [type]="mostrarSenha ? 'text' : 'password'"
+          placeholder="Digite a nova senha"
+          required
+          class="senha-input"
+        ></ion-input>
+        <ion-icon
+          [name]="mostrarSenha ? 'eye-off-outline' : 'eye-outline'"
+          (click)="toggleSenhaVisibilidade()"
+          class="eye-icon"
+        ></ion-icon>
+      </div>
+
+      <!-- Confirmar Senha -->
+      <div class="password-container">
+        <ion-input
+          [(ngModel)]="confirmarSenha"
+          [type]="mostrarConfirmarSenha ? 'text' : 'password'"
+          placeholder="Confirme a nova senha"
+          required
+          class="senha-input"
+        ></ion-input>
+        <ion-icon
+          [name]="mostrarConfirmarSenha ? 'eye-off-outline' : 'eye-outline'"
+          (click)="toggleConfirmarSenhaVisibilidade()"
+          class="eye-icon"
+        ></ion-icon>
+      </div>
+
+      <ion-button
+        expand="full"
+        color="primary"
+        (click)="definirNovaSenha()"
+        [disabled]="novaSenha !== confirmarSenha"
+        class="botao-custom"
+      >
+        Definir Senha
+      </ion-button>
     </div>
   </div>
 </ion-content>

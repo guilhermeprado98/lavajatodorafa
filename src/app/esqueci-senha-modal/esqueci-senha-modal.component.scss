@@ -1,0 +1,40 @@
+.botao-custom {
+  border-radius: 15px;
+  font-size: 14px;
+  padding: 8px 16px;
+  --ion-padding: 4px 8px;
+  margin: auto;
+  width: 50%;
+}
+
+.content{
+  margin-top: 5%;
+}
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.senha-input {
+  width: 100%;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 22px;
+  color: #666;
+  z-index: 9999;
+}
+
+ion-input,
+input[type="text"],
+input[type="password"] {
+  text-align: center; /* Centraliza o texto dentro do input */
+  font-size: 16px; /* Ajusta o tamanho da fonte */
+  padding: 10px; /* Adiciona um espaçamento interno */
+}
