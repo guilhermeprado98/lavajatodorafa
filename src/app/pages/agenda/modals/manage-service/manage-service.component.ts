@@ -47,6 +47,7 @@ export class ManageServiceAgendaComponent implements OnInit {
       this.agendamento = {
         id: '',
         nome: '',
+        cliente_id: '',
         veiculo: '',
         data: '',
         observacoes: '',
@@ -68,6 +69,7 @@ export class ManageServiceAgendaComponent implements OnInit {
 
     this.atualizarHorariosDisponiveis(new Date().getDay());
   }
+
 
   /**
    * Carrega os serviços disponíveis da API para o Select
@@ -132,23 +134,7 @@ export class ManageServiceAgendaComponent implements OnInit {
    */
   async salvar() {
 
-    const nomesAmigaveis: { [key: string]: string } = {
-      veiculo: "Veículo",
-      placa: "Placa",
-      data: "Data",
-      observacoes: "Observações",
-      servico_id: "Serviço",
-      horario: "Horário"
-    };
 
-    const camposObrigatorios = Object.keys(nomesAmigaveis);
-
-    for (const campo of camposObrigatorios) {
-      if (!this.agendamento[campo]) {
-        Swal.fire(`O campo "${nomesAmigaveis[campo]}" é obrigatório.`, "", "warning");
-        return;
-      }
-    }
 
     this.agendamento.data = this.agendamento.data.split('T')[0];
     try {
@@ -156,17 +142,36 @@ export class ManageServiceAgendaComponent implements OnInit {
       let method = 'POST';
       let body = null;
       let idcliente = null;
-      if(this.tipoUsuario === 'cliente'){
+      console.log('this.tipoUsuario', this.tipoUsuario);
+      if (this.tipoUsuario === 'cliente') {
         idcliente = JSON.parse(this.dadosUsuario).id;
-      }else{
+      } else {
         idcliente = this.agendamento.cliente_id;
       }
 
       if (this.operacao === 'add') {
+        const nomesAmigaveis: { [key: string]: string } = {
+          veiculo: "Veículo",
+          placa: "Placa",
+          data: "Data",
+          observacoes: "Observações",
+          servico_id: "Serviço",
+          horario: "Horário"
+        };
+
+        const camposObrigatorios = Object.keys(nomesAmigaveis);
+
+        for (const campo of camposObrigatorios) {
+          if (!this.agendamento[campo]) {
+            Swal.fire(`O campo "${nomesAmigaveis[campo]}" é obrigatório.`, "", "warning");
+            return;
+          }
+        }
+
         url = `${environment.apiUrl}/services/agendamento.php`;
         body = JSON.stringify({
           operacao: 'add',
-          id_cliente: idcliente,
+          cliente_id: idcliente,
           veiculo: this.agendamento.veiculo,
           data: this.agendamento.data,
           observacoes: this.agendamento.observacoes,
@@ -212,7 +217,7 @@ export class ManageServiceAgendaComponent implements OnInit {
       });
 
       const resultado = await response.json();
-      console.log('resultado',resultado);
+      console.log('resultado', resultado);
       if (resultado?.sucesso) {
         Swal.fire('Operação concluída com sucesso!', '', 'success').then(() => {
           this.modalController.dismiss({ resultado: true });
@@ -251,9 +256,21 @@ export class ManageServiceAgendaComponent implements OnInit {
     let horaInicio = 8;
     let horaFim = diaSemana === 6 ? 12 : 17; // Sábado até 12h, outros dias até 17h
 
-    // Enviar a data para o PHP verificar os horários ocupados
+    const agora = new Date();
     const dataSelecionada = new Date(this.agendamento.data);
     const dataString = dataSelecionada.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+    const horarioAtual = agora.getHours();
+    const minutosAtuais = agora.getMinutes();
+
+    // Se for hoje, garantir que só aparecem horários futuros
+    if (dataSelecionada.toDateString() === agora.toDateString()) {
+      if (minutosAtuais < 30) {
+        horaInicio = horarioAtual; // Se estiver entre XX:00 e XX:29, permite XX:30
+      } else {
+        horaInicio = horarioAtual + 1; // Se estiver entre XX:30 e XX:59, começa na próxima hora cheia
+      }
+    }
 
     // Requisição ao PHP para obter horários ocupados
     fetch(`${environment.apiUrl}/services/verificar-horarios.php`, {
@@ -270,14 +287,34 @@ export class ManageServiceAgendaComponent implements OnInit {
           const horaString = `${hora.toString().padStart(2, '0')}:00`;
           const meiaHoraString = `${hora.toString().padStart(2, '0')}:30`;
 
+          // Se o horário for hoje, garantir que ele só aparece se for após o horário atual
+          if (dataSelecionada.toDateString() === agora.toDateString()) {
+            if (hora === horarioAtual && minutosAtuais >= 30) {
+              // Se já passou de 30 min, permite apenas XX:30 da próxima hora
+              if (!horariosOcupados[meiaHoraString] || horariosOcupados[meiaHoraString] < 2) {
+                console.log(`Horário disponível: ${meiaHoraString}`);
+                this.horariosDisponiveis.push(meiaHoraString);
+              }
+              continue; // Pula a verificação de XX:00 dessa hora
+            }
+            if (hora === horarioAtual && minutosAtuais < 30) {
+              // Se ainda não passou de 30 min, não exibe XX:00, só XX:30
+              if (!horariosOcupados[meiaHoraString] || horariosOcupados[meiaHoraString] < 2) {
+                console.log(`Horário disponível: ${meiaHoraString}`);
+                this.horariosDisponiveis.push(meiaHoraString);
+              }
+              continue; // Pula a verificação de XX:00 dessa hora
+            }
+          }
+
           // Verifique se o horário já está ocupado mais de 2 vezes
           if (!horariosOcupados[horaString] || horariosOcupados[horaString] < 2) {
-            console.log(`Horário disponível: ${horaString}`); // Debugging
+            console.log(`Horário disponível: ${horaString}`);
             this.horariosDisponiveis.push(horaString);
           }
 
           if (!horariosOcupados[meiaHoraString] || horariosOcupados[meiaHoraString] < 2) {
-            console.log(`Horário disponível: ${meiaHoraString}`); // Debugging
+            console.log(`Horário disponível: ${meiaHoraString}`);
             this.horariosDisponiveis.push(meiaHoraString);
           }
         }
@@ -287,6 +324,10 @@ export class ManageServiceAgendaComponent implements OnInit {
         Swal.fire('Erro ao verificar horários disponíveis.', '', 'error');
       });
   }
+
+
+
+
 
 
 

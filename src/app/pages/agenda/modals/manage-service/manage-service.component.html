@@ -15,7 +15,7 @@
       <ion-label position="stacked">Cliente</ion-label>
       <ion-select [(ngModel)]="agendamento.cliente_id" name="cliente" required>
         <ion-select-option *ngFor="let cliente of listaClientes" [value]="cliente.id">
-          {{ cliente.nome }}
+          {{ cliente.nome }} - {{ cliente.email }}
         </ion-select-option>
         <ion-select-option *ngIf="!listaClientes.length" value="" disabled>Sem clientes disponíveis</ion-select-option>
       </ion-select>
