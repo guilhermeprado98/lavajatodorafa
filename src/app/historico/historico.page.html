@@ -49,8 +49,9 @@
         <p><strong>Número do Agendamento:</strong> {{ registro.id_agendamento }}</p>
         <p><strong>Observações:</strong> {{ registro.observacoes }}</p>
         <p><strong>Status:</strong> {{ registro.status }}</p>
-        <p><strong>Data de Entrada:</strong> {{ registro.data_hora_entrada | date:'short' }}</p>
-        <p><strong>Data de Saída:</strong> {{ registro.data_hora_saida | date:'short' }}</p>
+        <p><strong>Data de Entrada:</strong> {{ registro.data_hora_entrada | date:'d/M/y HH:mm' }}</p>
+        <p><strong>Data de Saída:</strong> {{ registro.data_hora_saida | date:'d/M/y HH:mm' }}</p>
+
       </ion-card-content>
     </ion-card>
   </div>

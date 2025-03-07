@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController,LoadingController } from '@ionic/angular';
 import { environment } from '../../../../../environments/environment';
 import Swal from 'sweetalert2';
 
@@ -19,7 +19,7 @@ export class ManageServiceAgendaComponent implements OnInit {
   listaClientes: Array<any> = [];
   tipoUsuario = JSON.parse(this.dadosUsuario).tipo;
 
-  constructor(private modalController: ModalController) { }
+  constructor(private modalController: ModalController, private loadingController: LoadingController) { }
 
   ngOnInit() {
     this.carregarServicos();
@@ -132,105 +132,117 @@ export class ManageServiceAgendaComponent implements OnInit {
   /**
    * Salva os dados no backend com base na operação (add, edit ou delete)
    */
-  async salvar() {
 
+async salvar() {
+  const loading = await this.loadingController.create({
+    message: 'Aguarde...',
+    spinner: 'crescent'
+  });
 
+  await loading.present(); // Exibir o loading
 
-    this.agendamento.data = this.agendamento.data.split('T')[0];
-    try {
-      let url = '';
-      let method = 'POST';
-      let body = null;
-      let idcliente = null;
-      console.log('this.tipoUsuario', this.tipoUsuario);
-      if (this.tipoUsuario === 'cliente') {
-        idcliente = JSON.parse(this.dadosUsuario).id;
-      } else {
-        idcliente = this.agendamento.cliente_id;
-      }
+  this.agendamento.data = this.agendamento.data.split('T')[0];
 
-      if (this.operacao === 'add') {
-        const nomesAmigaveis: { [key: string]: string } = {
-          veiculo: "Veículo",
-          placa: "Placa",
-          data: "Data",
-          observacoes: "Observações",
-          servico_id: "Serviço",
-          horario: "Horário"
-        };
+  try {
+    let url = '';
+    let method = 'POST';
+    let body = null;
+    let idcliente = null;
 
-        const camposObrigatorios = Object.keys(nomesAmigaveis);
+    console.log('this.tipoUsuario', this.tipoUsuario);
 
-        for (const campo of camposObrigatorios) {
-          if (!this.agendamento[campo]) {
-            Swal.fire(`O campo "${nomesAmigaveis[campo]}" é obrigatório.`, "", "warning");
-            return;
-          }
-        }
-
-        url = `${environment.apiUrl}/services/agendamento.php`;
-        body = JSON.stringify({
-          operacao: 'add',
-          cliente_id: idcliente,
-          veiculo: this.agendamento.veiculo,
-          data: this.agendamento.data,
-          observacoes: this.agendamento.observacoes,
-          servico_id: this.agendamento.servico_id,
-          placa: this.agendamento.placa,
-          delivery: this.agendamento.delivery,
-          endereco: this.agendamento.endereco,
-          horario: this.agendamento.horario,
-        });
-      }
-
-      if (this.operacao === 'edit') {
-        url = `${environment.apiUrl}/services/agendamento.php`;
-
-        body = JSON.stringify({
-          operacao: 'edit',
-          id_cliente: this.agendamento.cliente_id,
-          id: this.agendamento.id,
-          veiculo: this.agendamento.veiculo,
-          data: this.agendamento.data,
-          observacoes: this.agendamento.observacoes,
-          servico_id: this.agendamento.servico_id,
-          placa: this.agendamento.placa,
-          delivery: this.agendamento.delivery,
-          endereco: this.agendamento.endereco,
-          horario: this.agendamento.horario,
-        });
-      }
-
-      if (this.operacao === 'delete') {
-
-        url = `${environment.apiUrl}/services/agendamento.php`;
-        body = JSON.stringify({
-          operacao: 'delete',
-          id: this.agendamento.id,
-        });
-      }
-
-      const response = await fetch(url, {
-        method: method,
-        headers: { 'Content-Type': 'application/json' },
-        body,
-      });
-
-      const resultado = await response.json();
-      console.log('resultado', resultado);
-      if (resultado?.sucesso) {
-        Swal.fire('Operação concluída com sucesso!', '', 'success').then(() => {
-          this.modalController.dismiss({ resultado: true });
-          location.reload();
-        });
-      } else {
-        Swal.fire(resultado.mensagem, '', 'error');
-      }
-    } catch (error) {
-      console.error('Erro durante a chamada da API', error);
-      Swal.fire('Erro ao se comunicar com a API.', '', 'error');
+    if (this.tipoUsuario === 'cliente') {
+      idcliente = JSON.parse(this.dadosUsuario).id;
+    } else {
+      idcliente = this.agendamento.cliente_id;
     }
+
+    if (this.operacao === 'add') {
+      const nomesAmigaveis: { [key: string]: string } = {
+        veiculo: "Veículo",
+        placa: "Placa",
+        data: "Data",
+        observacoes: "Observações",
+        servico_id: "Serviço",
+        horario: "Horário"
+      };
+
+      const camposObrigatorios = Object.keys(nomesAmigaveis);
+
+      for (const campo of camposObrigatorios) {
+        if (!this.agendamento[campo]) {
+          await loading.dismiss(); // Fecha o loading antes de exibir o alerta
+          Swal.fire(`O campo "${nomesAmigaveis[campo]}" é obrigatório.`, "", "warning");
+          return;
+        }
+      }
+
+      url = `${environment.apiUrl}/services/agendamento.php`;
+      body = JSON.stringify({
+        operacao: 'add',
+        cliente_id: idcliente,
+        veiculo: this.agendamento.veiculo,
+        data: this.agendamento.data,
+        observacoes: this.agendamento.observacoes,
+        servico_id: this.agendamento.servico_id,
+        placa: this.agendamento.placa,
+        delivery: this.agendamento.delivery,
+        endereco: this.agendamento.endereco,
+        horario: this.agendamento.horario,
+      });
+    }
+
+    if (this.operacao === 'edit') {
+      url = `${environment.apiUrl}/services/agendamento.php`;
+
+      body = JSON.stringify({
+        operacao: 'edit',
+        id_cliente: this.agendamento.cliente_id,
+        id: this.agendamento.id,
+        veiculo: this.agendamento.veiculo,
+        data: this.agendamento.data,
+        observacoes: this.agendamento.observacoes,
+        servico_id: this.agendamento.servico_id,
+        placa: this.agendamento.placa,
+        delivery: this.agendamento.delivery,
+        endereco: this.agendamento.endereco,
+        horario: this.agendamento.horario,
+      });
+    }
+
+    if (this.operacao === 'delete') {
+      url = `${environment.apiUrl}/services/agendamento.php`;
+      body = JSON.stringify({
+        operacao: 'delete',
+        id: this.agendamento.id,
+      });
+    }
+
+    const response = await fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    });
+
+    const resultado = await response.json();
+    console.log('resultado', resultado);
+
+    await loading.dismiss(); // Fecha o loading antes de exibir qualquer mensagem
+
+    if (resultado?.sucesso) {
+      Swal.fire('Operação concluída com sucesso!', '', 'success').then(() => {
+        this.modalController.dismiss({ resultado: true });
+        location.reload();
+      });
+    } else {
+      Swal.fire(resultado.mensagem, '', 'error');
+    }
+  } catch (error) {
+    await loading.dismiss(); // Fecha o loading antes de exibir o erro
+    console.error('Erro durante a chamada da API', error);
+    Swal.fire('Erro ao se comunicar com a API.', '', 'error');
   }
+}
 
   isSunday() {
     return new Date(this.agendamento.data).getDay() === 0;  // Retorna true se for domingo

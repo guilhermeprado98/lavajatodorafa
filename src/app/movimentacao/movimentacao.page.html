@@ -72,10 +72,10 @@
         <ion-card-title>{{ movimentacao.veiculo }}</ion-card-title>
         <ion-card-subtitle>Nome do cliente: {{ movimentacao.nome_cliente }}</ion-card-subtitle>
         <ion-card-subtitle>
-          Entrada: {{ movimentacao.data_hora_entrada | date: 'short' }}
+          Entrada: {{ movimentacao.data_hora_entrada | date:'d/M/y HH:mm' }}
           <br />
           <span *ngIf="movimentacao.data_hora_saida">
-            Saída: {{ movimentacao.data_hora_saida | date: 'short' }}
+            Saída: {{ movimentacao.data_hora_saida | date:'d/M/y HH:mm' }}
           </span>
           <br />
           <!-- Adicionando o ID do Agendamento e o Nome do Cliente -->
